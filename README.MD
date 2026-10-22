@@ -1,5 +1,10 @@
 # Nhận diện biển số xe Việt Nam bằng HOG và SVM
 
+[![Python 3.14](https://img.shields.io/badge/Python-3.14-blue.svg)](https://www.python.org/)
+[![OpenCV 4.13](https://img.shields.io/badge/OpenCV-4.13-green.svg)](https://opencv.org/)
+[![scikit-learn 1.8](https://img.shields.io/badge/scikit--learn-1.8-orange.svg)](https://scikit-learn.org/1.8/)
+[![Jupyter Notebooks](https://img.shields.io/badge/Jupyter-Notebooks-orange.svg)](https://jupyter.org/)
+
 Dự án nghiên cứu nhận diện biển số từ ảnh phương tiện bằng xử lý ảnh và học máy cổ điển. Hệ thống gồm phát hiện vùng biển số, hiệu chỉnh hình học, phân đoạn ký tự, trích xuất đặc trưng HOG và phân loại SVM. Báo cáo này tổng hợp các thí nghiệm thực hiện ngày 21 và 22 tháng 10 năm 2026.
 
 Pipeline hai giai đoạn đạt 80 biển đúng trên 180 ảnh kiểm tra, tương ứng 44,44%. Bộ lọc chất lượng ký tự đạt 74 biển đúng trên một tập kiểm tra khác gồm 180 ảnh, so với 70 biển đúng của cùng pipeline khi chưa lọc. Hai kết quả thuộc hai tập ảnh khác nhau. Hệ thống hiện phục vụ nghiên cứu; độ chính xác toàn biển và khả năng từ chối vùng giả còn hạn chế.
@@ -99,24 +104,47 @@ py -3.14 -m venv .venv
 
 Dữ liệu, model và đầu ra thí nghiệm được lưu cục bộ và loại khỏi Git. Một bản clone mã nguồn cần chuẩn bị dữ liệu và các phiên bản model phụ thuộc trước khi chạy thí nghiệm tiếp theo. [Quy trình tái lập](docs/reproduction.md) trình bày thứ tự các thí nghiệm, biến môi trường, điều kiện đầu vào và lệnh terminal. Các lệnh không yêu cầu mở giao diện notebook.
 
-## 6. Tổ chức mã nguồn và Git
+## 6. Project structure
 
-| Đường dẫn | Nội dung được công bố |
-|---|---|
-| `src/plate_ml/` | Mã xử lý ảnh, đặc trưng, huấn luyện, đánh giá và quản lý model |
-| `scripts/` | Điều phối thí nghiệm, tạo tài liệu thực thi và kiểm tra màu |
-| `tests/` | Kiểm tra xử lý ảnh, chia tập, huấn luyện, nạp model và cực tính |
-| `docs/` | Kiến trúc, quy trình, báo cáo, số liệu tổng hợp và tài liệu tham khảo |
-| `Registration/README.md` | Cấu trúc lưu checkpoint và phiên bản model |
-| `assets/cascades/` | Cascade OpenCV, giấy phép và thông tin nguồn |
-| `data/ocr_groups.example.csv` | Mẫu khai báo nhóm nguồn ký tự |
+Cấu trúc chính của mã nguồn và tài liệu được công bố trong Git:
+
+```text
+Detect_plate/
+    assets/cascades/                       # Cascade OpenCV, giấy phép và thông tin nguồn
+    data/
+        ocr_groups.example.csv             # Mẫu nhóm nguồn ký tự
+    docs/
+        legacy-evidence/                   # Ảnh minh họa thí nghiệm lịch sử
+        results/
+            experiment-summary.json        # Số liệu tổng hợp và dấu kiểm tra báo cáo
+        architecture.md                    # Kiến trúc và cấu hình hệ thống
+        experiment-results.md              # Kết quả phương án cơ sở
+        vnlp-ocr-experiment.md             # OCR từ ký tự VNLP
+        research-pipeline-experiment.md    # Detector hai giai đoạn và phân đoạn kết hợp
+        glyph-quality-experiment.md        # Lọc chất lượng ký tự
+        color-robustness.md                # Kiểm tra màu và cực tính
+        reproduction.md                    # Quy trình cài đặt và tái lập
+        repository-policy.md               # Quy tắc quản lý Git
+        references.md                      # Tài liệu tham khảo
+        references.bib                     # Trích dẫn BibTeX
+    img/                                   # Sơ đồ kiến trúc lịch sử
+    Registration/
+        README.md                          # Cấu trúc checkpoint và phiên bản model
+    scripts/                               # Điều phối thí nghiệm và tạo tài liệu thực thi
+    src/plate_ml/                          # Xử lý ảnh, HOG, huấn luyện, đánh giá và Registry
+    tests/                                 # Kiểm thử dữ liệu, pipeline và khả năng nạp model
+    .gitignore                             # Quy tắc bỏ qua dữ liệu và tài nguyên cục bộ
+    pyproject.toml                         # Cấu hình package và dependency
+    requirements-tested.txt                # Phiên bản thư viện đã kiểm tra
+    README.MD                              # Báo cáo tổng quan
+```
 
 `.gitignore` loại môi trường Python, dữ liệu ảnh, notebook sinh tự động, model, checkpoint, cache và đầu ra cục bộ. Báo cáo Markdown, số liệu tổng hợp nhỏ và ảnh minh họa lịch sử trong `docs/legacy-evidence/` được giữ làm tài liệu nghiên cứu. [Quy tắc quản lý repository](docs/repository-policy.md) trình bày cách kiểm tra nội dung trước khi commit.
 
-## 7. Nhóm thực hiện
+## Contact
 
-| STT | Họ và tên | Mã số sinh viên |
-|---|---|---|
-| 1 | Nguyễn Phước Toàn | 2351267278 |
-| 2 | Nguyễn Hữu Tuấn Phát | 2351267274 |
-| 3 | Trần Mạnh Hùng | 2351267254 |
+For more details, reach out to:
+
+- **Nguyễn Hữu Tuấn Phát** - [tuanphatnguyenhuu@gmail.com](mailto:tuanphatnguyenhuu@gmail.com)
+- **Trần Mạnh Hùng**
+- **Nguyễn Phước Toàn**
