@@ -1,0 +1,24 @@
+{
+  "branch": "develop",
+  "dataset": "CNN\\CNN_letter_Dataset",
+  "dataset_files": 35500,
+  "dataset_inventory_sha256": "0035599c95b68f0b5e5229129ddbe33c3d9413dbf4189e49ed4c2569748a56e7",
+  "check": "relative paths, byte lengths and nanosecond mtimes identical before/after",
+  "removed": [
+    "CNN\\cnn.ipynb",
+    "CNN\\cnn_model.pth",
+    "CNN\\main.py",
+    "CNN\\models",
+    "CNN\\plate_seg.pth",
+    "CNN\\src",
+    "CNN_threshold",
+    "KNN",
+    "SVM"
+  ],
+  "evidence_preserved": [
+    "docs\\legacy-evidence\\CNN",
+    "docs\\legacy-evidence\\CNN_threshold",
+    "docs\\legacy-evidence\\KNN",
+    "docs\\legacy-evidence\\SVM"
+  ]
+}

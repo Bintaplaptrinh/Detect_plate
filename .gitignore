@@ -1,0 +1,66 @@
+# Python environments and generated metadata
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Local datasets and retired implementation directories
+/CNN/
+/CNN_threshold/
+/KNN/
+/SVM/
+/data/*
+!/data/ocr_groups.example.csv
+/VNLP_detection/
+/datasets/
+
+# Generated execution documents, experiment outputs and models
+/notebooks/
+/reports/
+/Registration/Checkpoints/
+/Registration/Registry/
+/Registration/RuntimeAssets/
+*.joblib
+*.pkl
+*.pickle
+*.pth
+*.pt
+*.onnx
+*.h5
+*.hdf5
+*.ckpt
+
+# Local test images at repository root
+/*.jpg
+/*.jpeg
+/*.png
+/*.bmp
+
+# Archives and temporary files
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.log
+*.tmp
+*.bak
+~$*
+.DS_Store
+Thumbs.db
+
+# Local credentials and editor settings
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
