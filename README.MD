@@ -96,20 +96,19 @@ Các tài liệu về AdaBoost, mô hình chuyên gia, U-Net lịch sử và th�
 Môi trường đã kiểm tra gồm Python 3.14.2, NumPy 2.4.1, OpenCV 4.13.0.92 và scikit-learn 1.8.0. Các lệnh được thực hiện tại thư mục gốc của repository, nơi chứa `pyproject.toml`.
 
 ```powershell
-py -3.14 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-tested.txt
-.\.venv\Scripts\python.exe -m pip install -e .
-.\.venv\Scripts\python.exe -m pytest -q
+python -m pip install -r requirements-tested.txt
+python -m pip install -e .
+python -m pytest -q
 ```
 
 Dữ liệu, model và đầu ra thí nghiệm được lưu cục bộ và loại khỏi Git. Một bản clone mã nguồn cần chuẩn bị dữ liệu và các phiên bản model phụ thuộc trước khi chạy thí nghiệm tiếp theo. [Quy trình tái lập](docs/reproduction.md) trình bày thứ tự các thí nghiệm, biến môi trường, điều kiện đầu vào và lệnh terminal. Các lệnh không yêu cầu mở giao diện notebook.
 
 ### Nhận diện một ảnh từ URL
 
-Sau khi cài package bằng `pip install -e .`, chạy tại thư mục chứa `run.py`:
+Sau khi cài package bằng `python -m pip install -e .`, chạy tại thư mục chứa `run.py`:
 
 ```powershell
-.\.venv\Scripts\python.exe run.py "https://example.com/car.jpg" --cpu
+python run.py "https://example.com/car.jpg" --cpu
 ```
 
 Thay URL ví dụ bằng liên kết HTTP/HTTPS trả về ảnh xe thực tế. Cú pháp tổng quát: `python run.py <image_url> [--cpu | --gpu]`; mặc định là `--cpu`. Có thể dùng tương đương `python -m plate_ml.inference <image_url> --cpu`.
