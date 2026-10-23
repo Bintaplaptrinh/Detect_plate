@@ -96,13 +96,34 @@ Các tài liệu về AdaBoost, mô hình chuyên gia, U-Net lịch sử và th�
 Môi trường đã kiểm tra gồm Python 3.14.2, NumPy 2.4.1, OpenCV 4.13.0.92 và scikit-learn 1.8.0. Các lệnh được thực hiện tại thư mục gốc của repository, nơi chứa `pyproject.toml`.
 
 ```powershell
-py -3.14 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-tested.txt
-.\.venv\Scripts\python.exe -m pip install -e .
-.\.venv\Scripts\python.exe -m pytest -q
+python -m pip install -r requirements-tested.txt
+python -m pip install -e .
+python -m pytest -q
 ```
 
 Dữ liệu, model và đầu ra thí nghiệm được lưu cục bộ và loại khỏi Git. Một bản clone mã nguồn cần chuẩn bị dữ liệu và các phiên bản model phụ thuộc trước khi chạy thí nghiệm tiếp theo. [Quy trình tái lập](docs/reproduction.md) trình bày thứ tự các thí nghiệm, biến môi trường, điều kiện đầu vào và lệnh terminal. Các lệnh không yêu cầu mở giao diện notebook.
+
+### Nhận diện một ảnh từ URL
+
+Sau khi cài package bằng `python -m pip install -e .`, chạy tại thư mục chứa `run.py`:
+
+```powershell
+python run.py "https://example.com/car.jpg" --cpu
+```
+
+Thay URL ví dụ bằng liên kết HTTP/HTTPS trả về ảnh xe thực tế. Cú pháp tổng quát: `python run.py <image_url> [--cpu | --gpu]`; mặc định là `--cpu`. Có thể dùng tương đương `python -m plate_ml.inference <image_url> --cpu`.
+
+Lệnh nạp model cục bộ `Registration/Registry/research_glyph_filter/v1` và không huấn luyện lại. Model không có trong Git; cần phục hồi bản phát hành theo [quy trình tái lập](docs/reproduction.md). Có thể đổi thư mục Registry và phiên bản bằng `--registry "D:\models\Registration" --version v1`. Chỉ sử dụng Registry từ nguồn tin cậy.
+
+Đầu ra JSON minh họa (biển số và thời gian thực tế phụ thuộc ảnh, máy và mạng):
+
+```json
+{"plate": "29A12345", "response_ms": 1250.321, "inference_ms": 181.234, "device": "cpu", "status": "recognized"}
+```
+
+`plate` là chuỗi biển số được xếp hạng cao nhất. `response_ms` tính từ lúc bắt đầu nạp model, tải và giải mã ảnh đến khi nhận diện xong; `inference_ms` chỉ tính detector, phân đoạn và OCR. Các giá trị thời gian dùng đơn vị ms, không bao gồm khởi động Python/import thư viện. Nếu không nhận diện được, `plate` là chuỗi rỗng và `status` là `no_plate`. URL lỗi, nội dung không phải ảnh hoặc thiếu model sẽ báo lỗi qua stderr và trả exit code 1. Tải ảnh có timeout 30 giây và giới hạn 20 MiB.
+
+`--gpu` đã có trong cú pháp nhưng sẽ báo chưa hỗ trợ và trả exit code 1: pipeline HOG/SVM hiện dùng OpenCV và scikit-learn trên CPU, chưa có backend suy luận GPU.
 
 ## 6. Project structure
 
