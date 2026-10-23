@@ -1,0 +1,13 @@
+{
+  "opencv_tag": "4.13.0",
+  "files": {
+    "haarcascade_russian_plate_number.xml": {
+      "url": "https://raw.githubusercontent.com/opencv/opencv/4.13.0/data/haarcascades/haarcascade_russian_plate_number.xml",
+      "sha256": "814cb5954682af570e58361f9e5f8b5b513a4112776bb9ecacef9f0e4ca6c2d7"
+    },
+    "LICENSE.opencv.txt": {
+      "url": "https://raw.githubusercontent.com/opencv/opencv/4.13.0/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  }
+}

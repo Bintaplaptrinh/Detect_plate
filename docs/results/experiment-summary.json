@@ -1,0 +1,1190 @@
+{
+  "schema_version": 1,
+  "documented_on": "2026-10-22",
+  "metric_definition": {
+    "exact_match": "fraction of complete plate strings equal to ground truth",
+    "character_error_rate": "total Levenshtein edit distance divided by total ground-truth characters",
+    "missing_detection": "empty predicted string retained in evaluation",
+    "numeric_units": "fractions unless field specifies count or seconds"
+  },
+  "environment": {
+    "python": "3.14.2",
+    "numpy": "2.4.1",
+    "opencv_python": "4.13.0.92",
+    "scikit_learn": "1.8.0"
+  },
+  "provenance": {
+    "01": {
+      "source_report": "reports/20261021T121906198186Z.json",
+      "sha256": "06a44b1a72dc8bb057ff491946de5ec05fbb3fb7e4e4a9ad8a71a421cfc82ba0"
+    },
+    "02": {
+      "source_report": "reports/20261022T085302376534Z-vnlp/summary.json",
+      "sha256": "6deabab68c09a409d6a52c164c42923a21271f137fabed4b8910903ca47507ad"
+    },
+    "03": {
+      "source_report": "reports/20261022T091902580679Z-research/summary.json",
+      "sha256": "b0b41da003672869f2cc101bc579d1cb024feeebf786b64861c88165d3041b78"
+    },
+    "04": {
+      "source_report": "reports/20261022T104205345901Z-glyph-filter/summary.json",
+      "sha256": "3c7fd8051470c6e5c8d434a586fc2d86b64c0626e7b72677bcfa6c38aec73a87"
+    },
+    "color": {
+      "source_report": "reports/20261022T111323677150Z-color-robustness/summary.json",
+      "sha256": "783e69c780f57a3489c6e49b88e8b926c1fc0b1b20e16e4403ccc657c0d253ec"
+    }
+  },
+  "experiment_01": {
+    "run_id": "20261021T121906198186Z",
+    "full_run": false,
+    "ocr_samples": 3500,
+    "ocr_champion": "svm",
+    "ocr_test": {
+      "accuracy": 0.9757142857142858,
+      "macro_f1": 0.9759187484072868,
+      "log_loss": 0.35229675753604534
+    },
+    "ocr_metric_status": "exploratory_unknown_augmentation_lineage",
+    "scene_samples": 90,
+    "detector_test": {
+      "all_candidates": {
+        "precision": 0.6,
+        "recall": 0.16666666666666666,
+        "f1": 0.2608695652173913,
+        "tp": 3,
+        "fp": 2,
+        "fn": 15,
+        "iou_threshold": 0.5
+      },
+      "top1": {
+        "precision": 0.6,
+        "recall": 0.16666666666666666,
+        "f1": 0.2608695652173913,
+        "tp": 3,
+        "fp": 2,
+        "fn": 15,
+        "iou_threshold": 0.5
+      },
+      "per_layout": {
+        "one_row": {
+          "precision": 0.3333333333333333,
+          "recall": 0.16666666666666666,
+          "f1": 0.2222222222222222,
+          "tp": 1,
+          "fp": 2,
+          "fn": 5,
+          "iou_threshold": 0.5
+        },
+        "two_rows": {
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "tp": 2,
+          "fp": 0,
+          "fn": 4,
+          "iou_threshold": 0.5
+        },
+        "two_rows_label_xe_may": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "iou_threshold": 0.5
+        }
+      }
+    },
+    "sequence_test": {
+      "oracle_raw": {
+        "exact_match": 0.1111111111111111,
+        "character_error_rate": 0.46938775510204084,
+        "samples": 18
+      },
+      "oracle_decoded": {
+        "exact_match": 0.1111111111111111,
+        "character_error_rate": 0.4421768707482993,
+        "samples": 18
+      },
+      "pipeline_raw": {
+        "exact_match": 0.05555555555555555,
+        "character_error_rate": 0.7959183673469388,
+        "samples": 18
+      },
+      "pipeline_decoded": {
+        "exact_match": 0.05555555555555555,
+        "character_error_rate": 0.7959183673469388,
+        "samples": 18
+      }
+    },
+    "segmentation": "cca",
+    "releases": {
+      "ocr": "v3",
+      "detector": "v3",
+      "pipeline": "v3"
+    },
+    "test_set": "A",
+    "scene_partitions": {
+      "train": 54,
+      "validation": 18,
+      "test": 18
+    },
+    "ocr_partitions": {
+      "train": 2100,
+      "validation": 700,
+      "test": 700
+    }
+  },
+  "experiment_02": {
+    "run_id": "20261022T085302376534Z-vnlp",
+    "extra_per_layout": 300,
+    "evaluation_status": "exploratory_reused_holdout_and_weak_glyph_labels",
+    "test": {
+      "baseline": {
+        "oracle_raw": {
+          "exact_match": 0.1111111111111111,
+          "character_error_rate": 0.46938775510204084,
+          "samples": 18
+        },
+        "oracle_decoded": {
+          "exact_match": 0.1111111111111111,
+          "character_error_rate": 0.4421768707482993,
+          "samples": 18
+        },
+        "pipeline_raw": {
+          "exact_match": 0.05555555555555555,
+          "character_error_rate": 0.7959183673469388,
+          "samples": 18
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.05555555555555555,
+          "character_error_rate": 0.7959183673469388,
+          "samples": 18
+        }
+      },
+      "vnlp_only": {
+        "oracle_raw": {
+          "exact_match": 0.3888888888888889,
+          "character_error_rate": 0.25170068027210885,
+          "samples": 18
+        },
+        "oracle_decoded": {
+          "exact_match": 0.3888888888888889,
+          "character_error_rate": 0.24489795918367346,
+          "samples": 18
+        },
+        "pipeline_raw": {
+          "exact_match": 0.1111111111111111,
+          "character_error_rate": 0.7619047619047619,
+          "samples": 18
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.1111111111111111,
+          "character_error_rate": 0.7619047619047619,
+          "samples": 18
+        }
+      },
+      "legacy_plus_vnlp": {
+        "oracle_raw": {
+          "exact_match": 0.3333333333333333,
+          "character_error_rate": 0.25170068027210885,
+          "samples": 18
+        },
+        "oracle_decoded": {
+          "exact_match": 0.3888888888888889,
+          "character_error_rate": 0.24489795918367346,
+          "samples": 18
+        },
+        "pipeline_raw": {
+          "exact_match": 0.1111111111111111,
+          "character_error_rate": 0.7619047619047619,
+          "samples": 18
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.1111111111111111,
+          "character_error_rate": 0.7619047619047619,
+          "samples": 18
+        }
+      }
+    },
+    "glyph_test": {
+      "baseline": {
+        "samples": 74,
+        "accuracy": 0.6216216216216216,
+        "macro_f1": 0.691237007758747,
+        "unseen_truth_classes": []
+      },
+      "vnlp_only": {
+        "samples": 74,
+        "accuracy": 0.9459459459459459,
+        "macro_f1": 0.9322589665045805,
+        "unseen_truth_classes": []
+      },
+      "legacy_plus_vnlp": {
+        "samples": 74,
+        "accuracy": 0.9324324324324325,
+        "macro_f1": 0.9622997249663917,
+        "unseen_truth_classes": []
+      }
+    },
+    "champion": "legacy_plus_vnlp",
+    "scene_counts": {
+      "validation": 18,
+      "test": 18,
+      "train": 951
+    },
+    "test_set": "A",
+    "train_scenes": 951,
+    "train_plate_identities": 930,
+    "vnlp_training_glyphs": 2712,
+    "combined_training_glyphs": 4812,
+    "ocr_classes_combined": 35
+  },
+  "experiment_03": {
+    "run_id": "20261022T091902580679Z-research",
+    "test_set": "B",
+    "scene_partitions": {
+      "train": 951,
+      "validation": 90,
+      "test": 180
+    },
+    "split_seed": 20261022,
+    "training_seed": 42,
+    "selection": {
+      "detector": "new",
+      "segmenter": "hybrid_seg",
+      "threshold": -1.0,
+      "rerank": 2.0,
+      "top_k": 5
+    },
+    "selection_budget": {
+      "thresholds": [
+        -1.0,
+        -0.5,
+        0.0
+      ],
+      "rerank_weights": [
+        0,
+        0.5,
+        1,
+        2
+      ],
+      "top_k": 5
+    },
+    "test": {
+      "baseline_02": {
+        "oracle_raw": {
+          "exact_match": 0.31666666666666665,
+          "character_error_rate": 0.2763784887678693,
+          "samples": 180
+        },
+        "oracle_decoded": {
+          "exact_match": 0.3277777777777778,
+          "character_error_rate": 0.2743362831858407,
+          "samples": 180
+        },
+        "pipeline_raw": {
+          "exact_match": 0.11666666666666667,
+          "character_error_rate": 0.808713410483322,
+          "samples": 180
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.11666666666666667,
+          "character_error_rate": 0.808713410483322,
+          "samples": 180
+        },
+        "detector_top1": {
+          "precision": 0.6808510638297872,
+          "recall": 0.17777777777777778,
+          "f1": 0.28193832599118945,
+          "tp": 32,
+          "fp": 15,
+          "fn": 148,
+          "iou_threshold": 0.5
+        },
+        "detector_all": {
+          "precision": 0.6274509803921569,
+          "recall": 0.17777777777777778,
+          "f1": 0.27705627705627706,
+          "tp": 32,
+          "fp": 19,
+          "fn": 148,
+          "iou_threshold": 0.5
+        },
+        "retained_candidate_recall_at_05": 0.17777777777777778,
+        "count_match": 0.1388888888888889
+      },
+      "new_detector_only": {
+        "oracle_raw": {
+          "exact_match": 0.31666666666666665,
+          "character_error_rate": 0.2763784887678693,
+          "samples": 180
+        },
+        "oracle_decoded": {
+          "exact_match": 0.3277777777777778,
+          "character_error_rate": 0.2743362831858407,
+          "samples": 180
+        },
+        "pipeline_raw": {
+          "exact_match": 0.3055555555555556,
+          "character_error_rate": 0.3601089176310415,
+          "samples": 180
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.3277777777777778,
+          "character_error_rate": 0.35602450646698436,
+          "samples": 180
+        },
+        "detector_top1": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 120,
+          "fp": 60,
+          "fn": 60,
+          "iou_threshold": 0.5
+        },
+        "detector_all": {
+          "precision": 0.08343483556638245,
+          "recall": 0.7611111111111111,
+          "f1": 0.150384193194292,
+          "tp": 137,
+          "fp": 1505,
+          "fn": 43,
+          "iou_threshold": 0.5
+        },
+        "retained_candidate_recall_at_05": 0.7611111111111111,
+        "count_match": 0.4
+      },
+      "new_segmentation_only": {
+        "oracle_raw": {
+          "exact_match": 0.19444444444444445,
+          "character_error_rate": 0.4016337644656229,
+          "samples": 180
+        },
+        "oracle_decoded": {
+          "exact_match": 0.20555555555555555,
+          "character_error_rate": 0.3975493533015657,
+          "samples": 180
+        },
+        "pipeline_raw": {
+          "exact_match": 0.03888888888888889,
+          "character_error_rate": 0.8468345813478557,
+          "samples": 180
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.03888888888888889,
+          "character_error_rate": 0.8468345813478557,
+          "samples": 180
+        },
+        "detector_top1": {
+          "precision": 0.6808510638297872,
+          "recall": 0.17777777777777778,
+          "f1": 0.28193832599118945,
+          "tp": 32,
+          "fp": 15,
+          "fn": 148,
+          "iou_threshold": 0.5
+        },
+        "detector_all": {
+          "precision": 0.6274509803921569,
+          "recall": 0.17777777777777778,
+          "f1": 0.27705627705627706,
+          "tp": 32,
+          "fp": 19,
+          "fn": 148,
+          "iou_threshold": 0.5
+        },
+        "retained_candidate_recall_at_05": 0.17777777777777778,
+        "count_match": 0.07222222222222222
+      },
+      "two_stage_top1": {
+        "oracle_raw": {
+          "exact_match": 0.19444444444444445,
+          "character_error_rate": 0.4016337644656229,
+          "samples": 180
+        },
+        "oracle_decoded": {
+          "exact_match": 0.20555555555555555,
+          "character_error_rate": 0.3975493533015657,
+          "samples": 180
+        },
+        "pipeline_raw": {
+          "exact_match": 0.22777777777777777,
+          "character_error_rate": 0.4050374404356705,
+          "samples": 180
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.23333333333333334,
+          "character_error_rate": 0.4036759700476515,
+          "samples": 180
+        },
+        "detector_top1": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 120,
+          "fp": 60,
+          "fn": 60,
+          "iou_threshold": 0.5
+        },
+        "detector_all": {
+          "precision": 0.08343483556638245,
+          "recall": 0.7611111111111111,
+          "f1": 0.150384193194292,
+          "tp": 137,
+          "fp": 1505,
+          "fn": 43,
+          "iou_threshold": 0.5
+        },
+        "retained_candidate_recall_at_05": 0.7611111111111111,
+        "count_match": 0.34444444444444444
+      },
+      "hybrid_top1": {
+        "oracle_raw": {
+          "exact_match": 0.4,
+          "character_error_rate": 0.2205582028590878,
+          "samples": 180
+        },
+        "oracle_decoded": {
+          "exact_match": 0.4166666666666667,
+          "character_error_rate": 0.21783526208304968,
+          "samples": 180
+        },
+        "pipeline_raw": {
+          "exact_match": 0.4222222222222222,
+          "character_error_rate": 0.31041524846834584,
+          "samples": 180
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.43333333333333335,
+          "character_error_rate": 0.3076923076923077,
+          "samples": 180
+        },
+        "detector_top1": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 120,
+          "fp": 60,
+          "fn": 60,
+          "iou_threshold": 0.5
+        },
+        "detector_all": {
+          "precision": 0.08343483556638245,
+          "recall": 0.7611111111111111,
+          "f1": 0.150384193194292,
+          "tp": 137,
+          "fp": 1505,
+          "fn": 43,
+          "iou_threshold": 0.5
+        },
+        "retained_candidate_recall_at_05": 0.7611111111111111,
+        "count_match": 0.5055555555555555
+      },
+      "selected_pipeline": {
+        "oracle_raw": {
+          "exact_match": 0.4,
+          "character_error_rate": 0.2205582028590878,
+          "samples": 180
+        },
+        "oracle_decoded": {
+          "exact_match": 0.4166666666666667,
+          "character_error_rate": 0.21783526208304968,
+          "samples": 180
+        },
+        "pipeline_raw": {
+          "exact_match": 0.43333333333333335,
+          "character_error_rate": 0.25936010891763106,
+          "samples": 180
+        },
+        "pipeline_decoded": {
+          "exact_match": 0.4444444444444444,
+          "character_error_rate": 0.2545949625595643,
+          "samples": 180
+        },
+        "detector_top1": {
+          "precision": 0.7166666666666667,
+          "recall": 0.7166666666666667,
+          "f1": 0.7166666666666667,
+          "tp": 129,
+          "fp": 51,
+          "fn": 51,
+          "iou_threshold": 0.5
+        },
+        "detector_all": {
+          "precision": 0.0666347075743049,
+          "recall": 0.7722222222222223,
+          "f1": 0.12268314210061784,
+          "tp": 139,
+          "fp": 1947,
+          "fn": 41,
+          "iou_threshold": 0.5
+        },
+        "retained_candidate_recall_at_05": 0.7722222222222223,
+        "count_match": 0.5611111111111111
+      }
+    },
+    "test_by_layout": {
+      "baseline_02": {
+        "one_row": {
+          "oracle_raw": {
+            "exact_match": 0.5666666666666667,
+            "character_error_rate": 0.10191082802547771,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.5666666666666667,
+            "character_error_rate": 0.10191082802547771,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.23333333333333334,
+            "character_error_rate": 0.7048832271762208,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.23333333333333334,
+            "character_error_rate": 0.7048832271762208,
+            "samples": 60
+          }
+        },
+        "two_rows": {
+          "oracle_raw": {
+            "exact_match": 0.15,
+            "character_error_rate": 0.3603411513859275,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.15,
+            "character_error_rate": 0.3603411513859275,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.016666666666666666,
+            "character_error_rate": 0.8955223880597015,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.016666666666666666,
+            "character_error_rate": 0.8955223880597015,
+            "samples": 60
+          }
+        },
+        "two_rows_label_xe_may": {
+          "oracle_raw": {
+            "exact_match": 0.23333333333333334,
+            "character_error_rate": 0.3572778827977316,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.26666666666666666,
+            "character_error_rate": 0.3516068052930057,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.1,
+            "character_error_rate": 0.8241965973534972,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.1,
+            "character_error_rate": 0.8241965973534972,
+            "samples": 60
+          }
+        }
+      },
+      "new_detector_only": {
+        "one_row": {
+          "oracle_raw": {
+            "exact_match": 0.5666666666666667,
+            "character_error_rate": 0.10191082802547771,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.5666666666666667,
+            "character_error_rate": 0.10191082802547771,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.45,
+            "character_error_rate": 0.21443736730360935,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.45,
+            "character_error_rate": 0.21443736730360935,
+            "samples": 60
+          }
+        },
+        "two_rows": {
+          "oracle_raw": {
+            "exact_match": 0.15,
+            "character_error_rate": 0.3603411513859275,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.15,
+            "character_error_rate": 0.3603411513859275,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.15,
+            "character_error_rate": 0.5607675906183369,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.16666666666666666,
+            "character_error_rate": 0.55863539445629,
+            "samples": 60
+          }
+        },
+        "two_rows_label_xe_may": {
+          "oracle_raw": {
+            "exact_match": 0.23333333333333334,
+            "character_error_rate": 0.3572778827977316,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.26666666666666666,
+            "character_error_rate": 0.3516068052930057,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.31666666666666665,
+            "character_error_rate": 0.31190926275992437,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.36666666666666664,
+            "character_error_rate": 0.30245746691871456,
+            "samples": 60
+          }
+        }
+      },
+      "new_segmentation_only": {
+        "one_row": {
+          "oracle_raw": {
+            "exact_match": 0.45,
+            "character_error_rate": 0.1762208067940552,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.45,
+            "character_error_rate": 0.1762208067940552,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.08333333333333333,
+            "character_error_rate": 0.7558386411889597,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.08333333333333333,
+            "character_error_rate": 0.7558386411889597,
+            "samples": 60
+          }
+        },
+        "two_rows": {
+          "oracle_raw": {
+            "exact_match": 0.1,
+            "character_error_rate": 0.4669509594882729,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.11666666666666667,
+            "character_error_rate": 0.4605543710021322,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.016666666666666666,
+            "character_error_rate": 0.8912579957356077,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.016666666666666666,
+            "character_error_rate": 0.8912579957356077,
+            "samples": 60
+          }
+        },
+        "two_rows_label_xe_may": {
+          "oracle_raw": {
+            "exact_match": 0.03333333333333333,
+            "character_error_rate": 0.5444234404536862,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.05,
+            "character_error_rate": 0.5387523629489603,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.016666666666666666,
+            "character_error_rate": 0.888468809073724,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.016666666666666666,
+            "character_error_rate": 0.888468809073724,
+            "samples": 60
+          }
+        }
+      },
+      "two_stage_top1": {
+        "one_row": {
+          "oracle_raw": {
+            "exact_match": 0.45,
+            "character_error_rate": 0.1762208067940552,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.45,
+            "character_error_rate": 0.1762208067940552,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.38333333333333336,
+            "character_error_rate": 0.23142250530785563,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.38333333333333336,
+            "character_error_rate": 0.23142250530785563,
+            "samples": 60
+          }
+        },
+        "two_rows": {
+          "oracle_raw": {
+            "exact_match": 0.1,
+            "character_error_rate": 0.4669509594882729,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.11666666666666667,
+            "character_error_rate": 0.4605543710021322,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.15,
+            "character_error_rate": 0.5991471215351812,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.15,
+            "character_error_rate": 0.5991471215351812,
+            "samples": 60
+          }
+        },
+        "two_rows_label_xe_may": {
+          "oracle_raw": {
+            "exact_match": 0.03333333333333333,
+            "character_error_rate": 0.5444234404536862,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.05,
+            "character_error_rate": 0.5387523629489603,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.15,
+            "character_error_rate": 0.387523629489603,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.16666666666666666,
+            "character_error_rate": 0.3837429111531191,
+            "samples": 60
+          }
+        }
+      },
+      "hybrid_top1": {
+        "one_row": {
+          "oracle_raw": {
+            "exact_match": 0.7666666666666667,
+            "character_error_rate": 0.044585987261146494,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.7666666666666667,
+            "character_error_rate": 0.044585987261146494,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.6333333333333333,
+            "character_error_rate": 0.14861995753715498,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.6333333333333333,
+            "character_error_rate": 0.14861995753715498,
+            "samples": 60
+          }
+        },
+        "two_rows": {
+          "oracle_raw": {
+            "exact_match": 0.18333333333333332,
+            "character_error_rate": 0.2942430703624733,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.2,
+            "character_error_rate": 0.2921108742004264,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.21666666666666667,
+            "character_error_rate": 0.5074626865671642,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.23333333333333334,
+            "character_error_rate": 0.5031982942430704,
+            "samples": 60
+          }
+        },
+        "two_rows_label_xe_may": {
+          "oracle_raw": {
+            "exact_match": 0.25,
+            "character_error_rate": 0.31190926275992437,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.2833333333333333,
+            "character_error_rate": 0.30623818525519847,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.4166666666666667,
+            "character_error_rate": 0.27977315689981097,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.43333333333333335,
+            "character_error_rate": 0.27599243856332706,
+            "samples": 60
+          }
+        }
+      },
+      "selected_pipeline": {
+        "one_row": {
+          "oracle_raw": {
+            "exact_match": 0.7666666666666667,
+            "character_error_rate": 0.044585987261146494,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.7666666666666667,
+            "character_error_rate": 0.044585987261146494,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.65,
+            "character_error_rate": 0.11252653927813164,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.65,
+            "character_error_rate": 0.11040339702760085,
+            "samples": 60
+          }
+        },
+        "two_rows": {
+          "oracle_raw": {
+            "exact_match": 0.18333333333333332,
+            "character_error_rate": 0.2942430703624733,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.2,
+            "character_error_rate": 0.2921108742004264,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.23333333333333334,
+            "character_error_rate": 0.43283582089552236,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.25,
+            "character_error_rate": 0.42857142857142855,
+            "samples": 60
+          }
+        },
+        "two_rows_label_xe_may": {
+          "oracle_raw": {
+            "exact_match": 0.25,
+            "character_error_rate": 0.31190926275992437,
+            "samples": 60
+          },
+          "oracle_decoded": {
+            "exact_match": 0.2833333333333333,
+            "character_error_rate": 0.30623818525519847,
+            "samples": 60
+          },
+          "pipeline_raw": {
+            "exact_match": 0.4166666666666667,
+            "character_error_rate": 0.23629489603024575,
+            "samples": 60
+          },
+          "pipeline_decoded": {
+            "exact_match": 0.43333333333333335,
+            "character_error_rate": 0.22873345935727787,
+            "samples": 60
+          }
+        }
+      }
+    },
+    "release": {
+      "name": "research_pipeline",
+      "version": "v3"
+    }
+  },
+  "experiment_04": {
+    "run_id": "20261022T104205345901Z-glyph-filter",
+    "test_set": "C",
+    "regression_set": "B",
+    "fresh_test": {
+      "baseline_v3": {
+        "raw": {
+          "exact_match": 0.38333333333333336,
+          "character_error_rate": 0.2998633879781421,
+          "samples": 180
+        },
+        "decoded": {
+          "exact_match": 0.3888888888888889,
+          "character_error_rate": 0.296448087431694,
+          "samples": 180
+        },
+        "exact_count": 70
+      },
+      "full_filter": {
+        "raw": {
+          "exact_match": 0.4111111111111111,
+          "character_error_rate": 0.29030054644808745,
+          "samples": 180
+        },
+        "decoded": {
+          "exact_match": 0.4111111111111111,
+          "character_error_rate": 0.287568306010929,
+          "samples": 180
+        },
+        "exact_count": 74
+      }
+    },
+    "fresh_by_layout": {
+      "baseline_v3": {
+        "one_row": {
+          "exact_match": 0.5833333333333334,
+          "character_error_rate": 0.18046709129511676,
+          "samples": 60
+        },
+        "two_rows": {
+          "exact_match": 0.25,
+          "character_error_rate": 0.44798301486199577,
+          "samples": 60
+        },
+        "two_rows_label_xe_may": {
+          "exact_match": 0.3333333333333333,
+          "character_error_rate": 0.26436781609195403,
+          "samples": 60
+        }
+      },
+      "full_filter": {
+        "one_row": {
+          "exact_match": 0.6,
+          "character_error_rate": 0.17834394904458598,
+          "samples": 60
+        },
+        "two_rows": {
+          "exact_match": 0.25,
+          "character_error_rate": 0.4416135881104034,
+          "samples": 60
+        },
+        "two_rows_label_xe_may": {
+          "exact_match": 0.38333333333333336,
+          "character_error_rate": 0.2471264367816092,
+          "samples": 60
+        }
+      }
+    },
+    "old_regression_metrics": {
+      "baseline_v3": {
+        "raw": {
+          "exact_match": 0.43333333333333335,
+          "character_error_rate": 0.25936010891763106,
+          "samples": 180
+        },
+        "decoded": {
+          "exact_match": 0.4444444444444444,
+          "character_error_rate": 0.2545949625595643,
+          "samples": 180
+        },
+        "exact_count": 80
+      },
+      "full_filter": {
+        "raw": {
+          "exact_match": 0.4722222222222222,
+          "character_error_rate": 0.25119128658951667,
+          "samples": 180
+        },
+        "decoded": {
+          "exact_match": 0.48333333333333334,
+          "character_error_rate": 0.24642614023144996,
+          "samples": 180
+        },
+        "exact_count": 87
+      }
+    },
+    "split_seed": 2026102204,
+    "quality_config": {
+      "min_row_support": 3,
+      "min_relative_height": 0.5,
+      "edge_margin": 0.025,
+      "fragmented_fraction": 0.65,
+      "fragmented_row_offset": 0.18,
+      "solid_stroke_ink": 0.75,
+      "solid_stroke_aspect": 0.18,
+      "isolated_edge_gap": 0.35,
+      "solid_stroke_row_offset": 0.08,
+      "filter_fragmented_edges": true,
+      "filter_solid_edges": true
+    },
+    "paired_changes": {
+      "repaired": 5,
+      "regressed": 1
+    },
+    "release": {
+      "name": "research_glyph_filter",
+      "version": "v1"
+    }
+  },
+  "color_controls": {
+    "run_id": "20261022T111323677150Z-color-robustness",
+    "synthetic": {
+      "baseline_04": {
+        "white_black": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        },
+        "yellow_black": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        },
+        "blue_white": {
+          "samples": 10,
+          "crop_exact": 0,
+          "full_exact": 0,
+          "selected_iou_hits": 5
+        },
+        "red_white": {
+          "samples": 10,
+          "crop_exact": 0,
+          "full_exact": 0,
+          "selected_iou_hits": 5
+        },
+        "green_white": {
+          "samples": 10,
+          "crop_exact": 0,
+          "full_exact": 0,
+          "selected_iou_hits": 5
+        }
+      },
+      "dual_polarity": {
+        "white_black": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        },
+        "yellow_black": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        },
+        "blue_white": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 9,
+          "selected_iou_hits": 9
+        },
+        "red_white": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        },
+        "green_white": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        }
+      },
+      "structural_dual": {
+        "white_black": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        },
+        "yellow_black": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        },
+        "blue_white": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 9,
+          "selected_iou_hits": 9
+        },
+        "red_white": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        },
+        "green_white": {
+          "samples": 10,
+          "crop_exact": 10,
+          "full_exact": 10,
+          "selected_iou_hits": 10
+        }
+      }
+    },
+    "validation": {
+      "baseline_04": {
+        "exact_match": 0.4888888888888889,
+        "character_error_rate": 0.19701086956521738,
+        "samples": 90
+      },
+      "dual_polarity": {
+        "exact_match": 0.4888888888888889,
+        "character_error_rate": 0.1983695652173913,
+        "samples": 90
+      },
+      "structural_dual": {
+        "exact_match": 0.3111111111111111,
+        "character_error_rate": 0.40896739130434784,
+        "samples": 90
+      }
+    },
+    "no_plate_nonempty_outputs": {
+      "baseline_04": 4,
+      "dual_polarity": 4,
+      "structural_dual": 2
+    },
+    "no_plate_samples": 10,
+    "status": "controlled_color_rendering_and_reused_validation_not_real_color_benchmark",
+    "trained": false,
+    "promoted": false
+  }
+}

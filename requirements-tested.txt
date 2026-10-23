@@ -1,0 +1,13 @@
+# Versions used for Python 3.14.2 verification. Install project separately: pip install -e .
+numpy==2.4.1
+opencv-python==4.13.0.92
+scikit-learn==1.8.0
+scipy==1.17.0
+joblib==1.5.3
+matplotlib==3.10.8
+pandas==2.3.3
+jupyterlab==4.5.2
+ipykernel==7.1.0
+nbformat==5.10.4
+nbclient==0.10.4
+pytest==9.0.2

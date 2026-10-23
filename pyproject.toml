@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vn-plate-ml"
+version = "0.1.0"
+description = "Inspectable Vietnamese license plate recognition with classical machine learning"
+requires-python = ">=3.14"
+dependencies = [
+  "numpy>=2.4,<3", "opencv-python>=4.13,<5", "scikit-learn>=1.8,<1.9",
+  "joblib>=1.5,<2", "scipy>=1.17,<2",
+]
+
+[project.optional-dependencies]
+lab = ["matplotlib>=3.10,<4", "pandas>=2.3,<4", "jupyterlab>=4.5,<5", "ipykernel>=7,<8", "nbformat>=5.10,<6", "nbclient>=0.10,<1"]
+test = ["pytest>=9,<10"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
