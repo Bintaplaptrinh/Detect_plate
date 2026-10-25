@@ -26,6 +26,7 @@ htmlcov/
 # Generated execution documents, experiment outputs and models
 /notebooks/
 /reports/
+/tmp/
 /Registration/Checkpoints/
 /Registration/Registry/
 /Registration/RuntimeAssets/

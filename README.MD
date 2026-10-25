@@ -70,6 +70,8 @@ Bộ lọc ở thí nghiệm 04 sửa 5 trường hợp và làm sai 1 trường
 | [Thí nghiệm 03](docs/research-pipeline-experiment.md) | Phương pháp hai giai đoạn, phân đoạn và xếp hạng vùng |
 | [Thí nghiệm 04](docs/glyph-quality-experiment.md) | Lọc ký tự nhiễu và đánh giá trên tập C |
 | [Kiểm tra màu](docs/color-robustness.md) | Màu thân xe, cực tính chữ nền và vùng giả |
+| [Đối sánh 100 ảnh](docs/comparison-experiment.md) | Test lại mô hình sau fine-tune: toàn hệ thống, OCR, từng bố cục và TP/FP/FN, Precision/Recall/F1 |
+| [Fine-tune 10 epoch](docs/finetune-10-experiment.md) | Fine-tune detector MTCNN và YOLO26n trên 951 ảnh train VNLP, giữ nguyên OCR và đánh giá lại 100 ảnh |
 | [Số liệu tổng hợp](docs/results/experiment-summary.json) | Kết quả máy đọc được, kèm dấu kiểm tra báo cáo gốc |
 | [Báo cáo lịch sử](docs/legacy-report.md) | Các phương án KNN, CNN và SVM năm 2025 |
 
