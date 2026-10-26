@@ -25,6 +25,32 @@ htmlcov/
 /VNLP_detection/
 /datasets/
 
+# Retired evidence and one-time migration tools, preserved locally
+/img/
+/docs/legacy-evidence/
+/docs/legacy-report.md
+/docs/migration-receipt.json
+/scripts/migrate_legacy.py
+
+# Publish only the final PDF from the report authoring workspace
+/docs/report/*
+!/docs/report/main.pdf
+/scripts/build_course_report_assets.py
+
+# LaTeX sources and authoring configuration
+*.tex
+*.sty
+*.cls
+*.bib
+*.bst
+*.bbx
+*.cbx
+*.lbx
+*.dtx
+*.ins
+.latexmkrc
+latexmkrc
+
 # Generated execution documents, experiment outputs and models
 /notebooks/
 /reports/
@@ -70,6 +96,15 @@ Thumbs.db
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.synctex
+*.xdv
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
 
 # Local credentials and editor settings
 .env
