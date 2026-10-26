@@ -101,6 +101,32 @@ Sau khi phục hồi `research_glyph_filter/v1` và manifest validation B:
 
 Lệnh tạo 50 ảnh dựng có biển và 10 ảnh dựng không có biển, đối chiếu ba phương án và chạy lại 90 ảnh validation B. Báo cáo ghi `trained=false` và `promoted=false`.
 
+### 4.6. Đối sánh PCA + FLD + SVM + HMM trên toàn pipeline
+
+Phụ thuộc: `research_glyph_filter/v1`, `pipeline/v3`, các manifest trong `ocr_legacy_plus_vnlp/v1`, manifest validation B và test C lịch sử, ảnh legacy và VNLP tương ứng. Runner tái dựng đặc trưng train và kiểm tra scaler/support vectors của SVM đang dùng trước khi huấn luyện nhánh giảm chiều. HMM chỉ học chuỗi train; cấu hình được ghi và khóa trước inference test.
+
+```powershell
+.\.venv\Scripts\python.exe scripts/run_pca_fld_hmm_comparison.py --run reports/my-pca-fld-hmm-run --repeats 3
+.\.venv\Scripts\python.exe scripts/build_pca_fld_hmm_report.py --run reports/my-pca-fld-hmm-run
+.\.venv\Scripts\python.exe scripts/run_notebook.py 05_pca_fld_hmm_pipeline_comparison
+```
+
+Thư mục run phải chưa tồn tại. Có thể thêm `--vnlp-root <thu_muc_detection>` và `--ocr-root <thu_muc_CNN_letter_Dataset>` khi di chuyển dữ liệu. `--reference-notebook <tep_ipynb>` chỉ lưu tên và hash tài liệu tham khảo, không thực thi mã trong tài liệu. Mặc định PCA=48, FLD tối đa C−1, RBF SVC C=3, seed=42; thay cấu hình cần ghi nhận như thí nghiệm mới.
+
+Runner chạy đủ test C, ba lượt inference cho bốn nhánh và ba lượt crop GT; lưu dự đoán từng ảnh và thời gian từng công đoạn. Bộ sinh báo cáo kiểm tra lại dự đoán SVM với bản phát hành lịch sử, tạo [báo cáo](pca-fld-hmm-comparison.md), JSON tổng hợp trong `docs/results/` và notebook `notebooks/05_pca_fld_hmm_pipeline_comparison.ipynb`. Đây là kiểm tra hồi quy trên test đã quan sát, không tự động đăng ký hoặc thay thế bản phát hành.
+
+### 4.7. Đối sánh riêng PCA + FLD + HMM không SVM trong OCR
+
+Phụ thuộc thêm candidate.joblib và protocol của thí nghiệm 4.6. Nhánh mới học phát xạ Gaussian trong không gian Fisher trên đúng dữ liệu train cũ; kiểm tra bằng số rằng phép chiếu PCA/FLD và HMM transitions trùng với nhánh đối chiếu. Gaussian dùng covariance nội lớp đầy đủ dùng chung, regularization=1e−6, prior ký tự đồng đều. Nhánh OCR không tạo hoặc gọi SVC; detector chung vẫn giữ SVM kiểm chứng vùng.
+
+```powershell
+.\.venv\Scripts\python.exe scripts/run_no_svm_comparison.py --run reports/my-no-svm-run --reference-run reports/pca-fld-hmm-180-20261026-v2 --repeats 3
+.\.venv\Scripts\python.exe scripts/build_no_svm_report.py --run reports/my-no-svm-run
+.\.venv\Scripts\python.exe scripts/run_notebook.py 06_pca_fld_hmm_no_svm_comparison
+```
+
+Runner chạy lại ba nhánh trên đủ 180 ảnh, ba lượt toàn pipeline và crop GT. [Báo cáo riêng](pca-fld-hmm-no-svm-comparison.md) và notebook 06 không ghi đè kết quả thí nghiệm bốn nhánh trước; không thay model của `run.py`.
+
 ## 5. Đọc và lưu kết quả
 
 Báo cáo Markdown chứa cấu hình và số liệu chính; [bảng JSON tổng hợp](results/experiment-summary.json) giữ số liệu chính xác và SHA-256 của các báo cáo máy đọc được gốc. Tài nguyên cục bộ gồm manifest chia tập, lựa chọn trước test, dự đoán từng ảnh, cache, ảnh chẩn đoán và model. Khi chuyển tài nguyên, cần giữ toàn bộ thư mục phiên bản và báo cáo liên quan.

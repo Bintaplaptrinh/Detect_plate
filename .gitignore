@@ -14,6 +14,8 @@ htmlcov/
 .ipynb_checkpoints/
 
 # Local datasets and retired implementation directories
+/storage/
+/app/target/
 /CNN/
 /CNN_threshold/
 /KNN/
@@ -23,9 +25,36 @@ htmlcov/
 /VNLP_detection/
 /datasets/
 
+# Retired evidence and one-time migration tools, preserved locally
+/img/
+/docs/legacy-evidence/
+/docs/legacy-report.md
+/docs/migration-receipt.json
+/scripts/migrate_legacy.py
+
+# Publish only the final PDF from the report authoring workspace
+/docs/report/*
+!/docs/report/main.pdf
+/scripts/build_course_report_assets.py
+
+# LaTeX sources and authoring configuration
+*.tex
+*.sty
+*.cls
+*.bib
+*.bst
+*.bbx
+*.cbx
+*.lbx
+*.dtx
+*.ins
+.latexmkrc
+latexmkrc
+
 # Generated execution documents, experiment outputs and models
 /notebooks/
 /reports/
+/tmp/
 /Registration/Checkpoints/
 /Registration/Registry/
 /Registration/RuntimeAssets/
@@ -57,6 +86,25 @@ htmlcov/
 ~$*
 .DS_Store
 Thumbs.db
+
+# LaTeX compilation intermediates
+*.aux
+*.toc
+*.lof
+*.lot
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex
+*.xdv
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
 
 # Local credentials and editor settings
 .env

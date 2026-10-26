@@ -43,8 +43,8 @@ Khi sử dụng dữ liệu VNLP, cần trích dẫn cả hai công trình sau:
 
 [2] The-Anh Pham (2023). Effective deep neural networks for license plate detection and recognition. The Visual Computer, 39(3), trang 927 đến 941. [DOI: 10.1007/s00371-021-02375-0](https://doi.org/10.1007/s00371-021-02375-0).
 
-Mục năm 2023 của bài báo thứ hai là năm xuất bản tập tạp chí; trang nhà xuất bản ghi ngày công bố trực tuyến là 21 tháng 1 năm 2022. Khóa BibTeX `PhamTA23` và thông tin cả hai công trình được lưu tại [references.bib](references.bib).
+Mục năm 2023 của bài báo thứ hai là năm xuất bản tập tạp chí; trang nhà xuất bản ghi ngày công bố trực tuyến là 21 tháng 1 năm 2022. Thông tin cả hai công trình được lưu tại [danh mục tham khảo](references.md).
 
 ## 5. Lưu trữ và quyền sử dụng
 
-Ảnh gốc và bảng nguồn gốc thực tế được lưu cục bộ, ngoài nội dung công bố của Git. Mẫu CSV được giữ trong repository. Giấy phép và thông tin ghi công của từng nguồn dữ liệu phải được giữ cùng dữ liệu; dự án không thay đổi quyền sử dụng của nguồn cung cấp. Thông tin kiểm kê trước đây được giữ trong [biên nhận chuyển đổi](migration-receipt.json).
+Ảnh gốc, bảng nguồn gốc thực tế và các biên nhận kiểm kê cũ được lưu cục bộ, ngoài nội dung công bố của Git. Mẫu CSV được giữ trong repository. Giấy phép và thông tin ghi công của từng nguồn dữ liệu phải được giữ cùng dữ liệu; dự án không thay đổi quyền sử dụng của nguồn cung cấp.

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PlateDetect · Nhận diện biển số</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root { color-scheme: light; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; color: #181818; background: #fff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fff; }
+    main { max-width: 1380px; margin: 0 auto; padding: 32px 36px 48px; }
+    header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 22px; border-bottom: 1px solid #e5e5e5; gap: 16px; }
+    h1 { margin: 0; font-size: 24px; font-weight: 650; letter-spacing: -.6px; }
+    header p { margin: 3px 0 0; color: #666; font-size: 14px; }
+    #connection { font-size: 13px; color: #666; }
+    .workspace { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 36px; margin-top: 28px; align-items: start; }
+    form { display: flex; flex-direction: column; gap: 24px; }
+    fieldset { padding: 0; margin: 0; border: 0; }
+    legend, .section-label { display: block; font-size: 13px; font-weight: 650; margin-bottom: 10px; }
+    .algorithms { display: grid; gap: 10px; }
+    .algorithm { display: flex; align-items: center; gap: 10px; border: 1px solid #d7d7d7; border-radius: 6px; padding: 12px; cursor: pointer; }
+    .algorithm:has(input:checked) { border-color: #252525; }
+    input[type=radio] { margin: 0; accent-color: #202020; width: 16px; height: 16px; }
+    .switch-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; }
+    .switch-row span { font-size: 14px; font-weight: 550; }
+    #multi { appearance: none; width: 38px; height: 22px; border: 1px solid #bcbcbc; border-radius: 20px; background: #fff; position: relative; cursor: pointer; flex: 0 0 auto; margin: 0; }
+    #multi::before { content: ""; position: absolute; width: 14px; height: 14px; top: 3px; left: 3px; background: #8b8b8b; border-radius: 50%; transition: transform .15s; }
+    #multi:checked { border-color: #222; }
+    #multi:checked::before { transform: translateX(16px); background: #222; }
+    .hint { color: #777; font-size: 12px; margin: 7px 0 0; }
+    button, .file-button { font: inherit; border: 1px solid #cecece; border-radius: 6px; padding: 10px 13px; background: #fff; color: #222; cursor: pointer; display: inline-block; text-align: center; }
+    button:hover:not(:disabled), .file-button:hover { border-color: #222; }
+    button:disabled { opacity: .45; cursor: default; }
+    button:focus-visible, input:focus-visible, .file-button:focus-within, a:focus-visible { outline: 2px solid #255b9a; outline-offset: 3px; }
+    .file-button { width: 100%; position: relative; overflow: hidden; }
+    #image { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+    #filename { margin: 8px 0; color: #666; font-size: 12px; overflow-wrap: anywhere; }
+    #sample { width: 100%; margin-top: 4px; font-size: 13px; }
+    #submit { border-color: #222; font-weight: 650; padding: 12px; }
+    #error { color: #aa2424; font-size: 13px; margin: 0; overflow-wrap: anywhere; }
+    [hidden] { display: none !important; }
+    .output-head { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; margin-bottom: 12px; }
+    .output-head h2 { font-size: 14px; font-weight: 650; margin: 0; }
+    #metrics { color: #666; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
+    .image-frame { border: 1px solid #e3e3e3; border-radius: 6px; min-height: 400px; display: flex; justify-content: center; align-items: center; overflow: hidden; background: #fff; }
+    #placeholder { padding: 60px 24px; color: #8a8a8a; text-align: center; font-size: 14px; }
+    #preview { display: block; max-width: 100%; width: auto; max-height: 75vh; object-fit: contain; }
+    #results { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .plate { display: inline-block; border: 1px solid #ddd; border-radius: 4px; padding: 5px 9px; font-size: 14px; font-variant-numeric: tabular-nums; }
+    #empty, #progress { font-size: 13px; color: #666; margin: 10px 0 0; }
+    .download { color: #444; font-size: 12px; margin-top: 14px; display: inline-block; text-underline-offset: 3px; }
+    @media (max-width: 760px) { main { padding: 22px 18px; } .workspace { grid-template-columns: 1fr; gap: 28px; } form { gap: 18px; } header { align-items: start; } .algorithms { grid-template-columns: 1fr 1fr; } .image-frame { min-height: 260px; } .output-head { flex-wrap: wrap; } }
+    @media (prefers-reduced-motion: reduce) { #multi::before { transition: none; } }
+  </style>
+</head>
+<body>
+<main>
+  <header><div><h1>Nhận diện biển số</h1><p>Thử nghiệm trên ảnh phương tiện</p></div><span id="connection" role="status">Đang kết nối mô hình</span></header>
+  <div class="workspace">
+    <form id="form">
+      <fieldset><legend>Thuật toán</legend><div class="algorithms">
+        <label class="algorithm"><input type="radio" name="algorithm" value="svm" checked><span>SVM</span></label>
+        <label class="algorithm"><input type="radio" name="algorithm" value="pca_fld_hmm"><span>PCA + FLD + HMM</span></label>
+      </div></fieldset>
+      <div><label class="switch-row" for="multi"><span>Nhận diện nhiều biển số</span><input id="multi" type="checkbox" role="switch" aria-label="Nhận diện nhiều biển số"></label><p class="hint">Quét thêm các vùng ảnh, xử lý từng biển và loại khung trùng. Thời gian có thể lâu hơn.</p></div>
+      <div><span class="section-label">Ảnh đầu vào</span><label class="file-button">Chọn ảnh<input id="image" type="file" accept="image/jpeg,image/png,image/webp,image/bmp" aria-label="Chọn ảnh phương tiện"></label><p id="filename">Chưa chọn ảnh</p><button id="sample" type="button">Dùng ảnh mẫu nhiều biển số</button><p class="hint">JPG, PNG, WEBP hoặc BMP. Tối đa 20 MB.</p></div>
+      <button id="submit" type="submit" disabled>Nhận diện</button>
+      <p id="error" role="alert" hidden></p>
+    </form>
+    <section aria-label="Kết quả nhận diện">
+      <div class="output-head"><h2 id="output-title">Ảnh và kết quả</h2><span id="metrics" aria-live="polite"></span></div>
+      <div class="image-frame" id="dropzone"><p id="placeholder">Chọn một ảnh hoặc dùng ảnh mẫu để bắt đầu.</p><img id="preview" alt="Ảnh phương tiện và khung biển số nhận diện" hidden></div>
+      <p id="progress" role="status" hidden>Đang xử lý ảnh</p>
+      <p id="empty" hidden>Không tìm thấy biển số đủ điều kiện nhận dạng trong ảnh.</p>
+      <div id="results" aria-live="polite"></div>
+      <a id="download" class="download" download="ket-qua-bien-so.jpg" hidden>Tải ảnh kết quả</a>
+    </section>
+  </div>
+</main>
+<script>
+  const $ = id => document.getElementById(id);
+  let selectedImage = null, ready = false, busy = false, objectUrl = null, sampleAvailable = true;
+  function error(message = '') { $('error').textContent = message; $('error').hidden = !message; }
+  function clearResults() { $('results').replaceChildren(); $('metrics').textContent = ''; $('empty').hidden = true; $('download').hidden = true; $('output-title').textContent = 'Ảnh và kết quả'; }
+  function updateButton() { $('submit').disabled = !selectedImage || !ready || busy; }
+  function showOriginal() { if (objectUrl) { $('preview').src = objectUrl; $('preview').hidden = false; $('placeholder').hidden = true; } }
+  function selectImage(file, name = file.name) {
+    error(); clearResults();
+    if (!file.size || file.size > 20 * 1024 * 1024) { error('Vui lòng chọn ảnh có dung lượng từ 1 byte đến 20 MB.'); return; }
+    if (file.type && !['image/jpeg', 'image/png', 'image/webp', 'image/bmp', 'image/x-ms-bmp'].includes(file.type)) { error('Định dạng chưa hỗ trợ. Vui lòng chọn JPG, PNG, WEBP hoặc BMP.'); return; }
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    selectedImage = file; objectUrl = URL.createObjectURL(file); $('filename').textContent = name;
+    showOriginal(); updateButton();
+  }
+  $('image').addEventListener('change', event => { if (event.target.files[0]) selectImage(event.target.files[0]); });
+  $('sample').addEventListener('click', async () => {
+    error(); $('sample').disabled = true;
+    try { const response = await fetch('/api/sample'); if (!response.ok) throw new Error('Không tải được ảnh mẫu.'); const blob = await response.blob(); selectImage(blob, 'Ảnh mẫu nhiều biển số'); $('multi').checked = true; }
+    catch (e) { error(e.message); } finally { $('sample').disabled = !sampleAvailable; }
+  });
+  document.querySelectorAll('input[name=algorithm], #multi').forEach(input => input.addEventListener('change', () => { clearResults(); showOriginal(); error(); }));
+  $('dropzone').addEventListener('dragover', event => event.preventDefault());
+  $('dropzone').addEventListener('drop', event => { event.preventDefault(); if (!busy && event.dataTransfer.files[0]) selectImage(event.dataTransfer.files[0]); });
+  $('form').addEventListener('submit', async event => {
+    event.preventDefault(); if (!selectedImage || busy || !ready) return;
+    busy = true; error(); clearResults(); showOriginal(); updateButton();
+    $('form').querySelectorAll('input, button').forEach(input => { input.disabled = true; });
+    $('submit').textContent = 'Đang nhận diện'; $('progress').hidden = false;
+    const start = performance.now();
+    const ticker = setInterval(() => { $('progress').textContent = 'Đang xử lý ảnh · ' + ((performance.now() - start) / 1000).toFixed(1) + ' giây'; }, 100);
+    const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), 70000);
+    try {
+      const form = new FormData(); form.append('algorithm', document.querySelector('input[name=algorithm]:checked').value); form.append('multi_detection', String($('multi').checked)); form.append('image', selectedImage, 'input-image');
+      const response = await fetch('/api/recognize', { method: 'POST', body: form, signal: controller.signal });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || (response.status === 413 ? 'Ảnh vượt giới hạn dung lượng.' : 'Không xử lý được ảnh. Vui lòng thử lại.'));
+      $('preview').src = 'data:' + data.image_mime + ';base64,' + data.image_base64;
+      $('output-title').textContent = 'Kết quả nhận diện';
+      $('metrics').textContent = data.detections.length + ' biển số · ' + data.processing_seconds.toFixed(3) + ' giây';
+      $('metrics').title = 'Thời gian xử lý ảnh và vẽ kết quả, không gồm tải ảnh hoặc nạp mô hình.';
+      for (const result of data.detections) { const item = document.createElement('span'); item.className = 'plate'; item.textContent = result.id + '. ' + result.text; $('results').append(item); }
+      $('empty').hidden = data.detections.length !== 0;
+      $('download').href = $('preview').src; $('download').hidden = false;
+      $('connection').textContent = 'Mô hình sẵn sàng';
+    } catch (e) { error(e.name === 'AbortError' ? 'Xử lý quá thời gian chờ. Vui lòng thử ảnh nhỏ hơn.' : e.message); }
+    finally { clearInterval(ticker); clearTimeout(timer); busy = false; $('progress').hidden = true; $('progress').textContent = 'Đang xử lý ảnh'; $('submit').textContent = 'Nhận diện'; $('form').querySelectorAll('input, button').forEach(input => { input.disabled = false; }); $('sample').disabled = !sampleAvailable; updateButton(); }
+  });
+  fetch('/api/health').then(response => response.json()).then(data => { ready = true; sampleAvailable = data.sample_available; $('connection').textContent = data.ready ? 'Mô hình sẵn sàng' : 'Mô hình sẽ nạp lại khi nhận diện'; $('sample').disabled = !sampleAvailable; updateButton(); }).catch(() => { $('connection').textContent = 'Chưa kết nối được máy chủ'; error('Không kết nối được ứng dụng. Hãy kiểm tra tiến trình Rust và tải lại trang.'); });
+</script>
+</body>
+</html>

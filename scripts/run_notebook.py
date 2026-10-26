@@ -7,7 +7,8 @@ from nbclient import NotebookClient
 
 def execute(notebook_name="01_classical_ml_pipeline"):
     root = Path(__file__).resolve().parents[1]
-    if notebook_name not in {"01_classical_ml_pipeline", "02_vnlp_ocr_ablation", "03_paper_inspired_pipeline", "04_glyph_quality_filter"}:
+    if notebook_name not in {"01_classical_ml_pipeline", "02_vnlp_ocr_ablation", "03_paper_inspired_pipeline", "04_glyph_quality_filter",
+                             "05_pca_fld_hmm_pipeline_comparison", "06_pca_fld_hmm_no_svm_comparison"}:
         raise ValueError("Unknown experiment notebook")
     source = root / "notebooks" / f"{notebook_name}.ipynb"
     output = root / "notebooks" / f"{notebook_name}.executed.ipynb"
