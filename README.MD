@@ -1,6 +1,6 @@
 # Nhận diện biển số xe Việt Nam bằng SVM và PCA, FLD, HMM
 
-Đồ án môn Nhận dạng mẫu, giảng viên Nguyễn Thị Hồng Tú, lớp S26-65TTNT. Hệ thống nhận diện biển số từ ảnh phương tiện bằng xử lý ảnh và học máy cổ điển.
+Hệ thống nhận diện biển số từ ảnh phương tiện bằng xử lý ảnh và học máy cổ điển.
 
 Hai phương án chính là HOG với SVM và HOG với PCA, FLD, phát xạ Gaussian, HMM. PCA, FLD và HMM là kiến thức trong chương trình; SVM được dùng làm phương pháp đối chiếu. Bộ kiểm chứng vùng SVM dùng chung cho cả hai phương án.
 
