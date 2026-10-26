@@ -10,7 +10,7 @@ Hai phương án chính là HOG với SVM và HOG với PCA, FLD, phát xạ Gau
 |---|---|
 | Báo cáo kỹ thuật, gồm bảng phân công | [PDF báo cáo](docs/report/main.pdf) |
 | Slide thuyết trình | [PowerPoint](docs/slide/slide.pptx) |
-| Ứng dụng thử nghiệm bằng Rust | [Hướng dẫn ứng dụng](app/README.md) |
+| Ứng dụng thử nghiệm | [Hướng dẫn ứng dụng](app/README.md) |
 | Mô tả dữ liệu và nguồn | [Dữ liệu](docs/data.md) |
 | Hướng dẫn tái lập thực nghiệm | [Tái lập](docs/reproduction.md) |
 
