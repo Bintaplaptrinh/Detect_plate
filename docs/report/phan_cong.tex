@@ -1,0 +1,49 @@
+\chapter*{Phân công công việc}
+\addcontentsline{toc}{chapter}{Phân công công việc}
+\newcounter{reporttask}
+\newcommand{\taskcell}[1]{%
+\begin{minipage}[t]{\linewidth}\vspace{0pt}
+\begin{list}{\arabic{reporttask}.}{%
+\usecounter{reporttask}
+\setlength{\leftmargin}{1.5em}
+\setlength{\labelwidth}{1.1em}
+\setlength{\labelsep}{0.4em}
+\setlength{\itemsep}{2pt}
+\setlength{\parsep}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}}
+\raggedright #1
+\end{list}
+\end{minipage}}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.7cm}p{11.4cm}@{}}
+\toprule
+\textbf{Thành viên} & \textbf{Công việc phụ trách}\\
+\midrule
+\endhead
+Nguyễn Hữu Tuấn Phát & \taskcell{
+\item Kiểm kê dữ liệu, phân tích phân bố lớp và mất cân bằng.
+\item Chia tập, chuẩn hóa ký tự và trích xuất HOG.
+\item Huấn luyện, lưu và giải thích mô hình SVM.
+\item Viết phần dữ liệu, tiền xử lý và SVM.
+}\\[0.3cm]
+Trần Mạnh Hùng & \taskcell{
+\item Xây dựng phép chiếu PCA và FLD.
+\item Xây dựng phát xạ Gaussian và HMM với Viterbi.
+\item Huấn luyện, kiểm tra và đối chiếu các nhánh kết hợp.
+\item Viết cơ sở toán học và phần mô hình trong chương trình.
+}\\[0.3cm]
+Nguyễn Phước Toàn & \taskcell{
+\item Tích hợp phát hiện, phân đoạn và nhận dạng ký tự.
+\item Đánh giá độ chính xác, sai số chuỗi và thời gian.
+\item Tạo biểu đồ, ma trận nhầm lẫn và phân tích lỗi.
+\item Hoàn thiện minh họa và viết phần đánh giá thực nghiệm.
+}\\[0.3cm]
+Thực hiện chung & \taskcell{
+\item Thống nhất bài toán và thiết kế thực nghiệm.
+\item Kiểm tra chéo dữ liệu, mô hình và kết quả.
+\item So sánh các phương án và lựa chọn mô hình.
+\item Rà soát báo cáo, chuẩn bị nội dung trình bày và bảo vệ.
+}\\
+\bottomrule
+\end{longtable}

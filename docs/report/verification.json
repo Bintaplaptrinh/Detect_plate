@@ -1,0 +1,23 @@
+{
+  "pages": 30,
+  "page_size_pt": [
+    595.28,
+    841.89
+  ],
+  "expected_body_font": "Times New Roman",
+  "body_font_pt": 13,
+  "margin_cm": 2.5,
+  "footer_placement": "bottom_right",
+  "footer_sequence_valid": true,
+  "webapp_status": "planned_interface_not_implemented",
+  "internal_character_dataset": 35500,
+  "role_table_columns": 2,
+  "role_table_numbered_lists": 4,
+  "review_pages": {
+    "theory": 2,
+    "data": 11,
+    "webapp": 22,
+    "roles": 28,
+    "references": 29
+  }
+}

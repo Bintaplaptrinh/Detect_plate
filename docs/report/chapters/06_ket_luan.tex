@@ -1,0 +1,14 @@
+\chapter{Kết luận}
+\section{Kết quả đạt được}
+Đồ án đã xây dựng hệ thống nhận diện biển số xe từ ảnh tĩnh bằng xử lý ảnh và học máy cổ điển. Quy trình bao gồm phát hiện vùng, hiệu chỉnh, phân đoạn, lọc ký tự, biểu diễn HOG và nhận dạng chuỗi. Hai phương án chính được triển khai là SVM và PCA, FLD, phát xạ Gaussian kết hợp HMM. PCA, FLD và HMM thể hiện các kiến thức nền tảng của môn Nhận dạng mẫu; SVM đóng vai trò mô hình ngoài chương trình để đối chiếu.
+
+Trên cùng 180 ảnh kiểm thử lịch sử, SVM đạt 74 biển đúng, tỷ lệ đúng hoàn toàn 41,11\% và CER 28,76\%. Nhánh Gaussian và HMM đạt 70 biển đúng, tỷ lệ 38,89\% và CER 34,90\%. Thời gian trung bình giảm từ 175,92 xuống 132,81 ms/ảnh. Kết quả cho thấy lợi ích về tốc độ đi kèm mức tăng lỗi chuỗi trong cấu hình hiện tại.
+
+Đánh giá đã phân biệt mức ký tự, vùng biển và chuỗi; có bảng kết quả, biểu đồ, ma trận nhầm lẫn và ví dụ đúng, sai. Mô hình đã lưu có thể nạp lại để suy luận trên ảnh được chọn. Bằng chứng hiện có ủng hộ giữ SVM làm phương án mặc định, đồng thời tiếp tục phát triển phương án dựa trên PCA, FLD và HMM.
+
+\section{Hạn chế và hướng phát triển}
+Hạn chế thứ nhất là tập kiểm thử đã từng được quan sát, chưa độc lập theo camera hoặc phiên ghi hình. Hạn chế thứ hai là nhãn ký tự VNLP được suy ra tự động, cần được kiểm tra thêm bằng gán nhãn thủ công. Hạn chế thứ ba là hệ thống còn phụ thuộc phân đoạn, sinh vùng và ràng buộc cấu trúc; tỷ lệ nhận đúng toàn biển chưa đáp ứng vận hành tự động ổn định.
+
+Hướng ưu tiên là xây dựng tập giữ lại mới theo nguồn camera, bổ sung ảnh không có biển và gán nhãn thủ công một tập ký tự đủ đại diện. Trên dữ liệu kiểm định, có thể khảo sát số thành phần PCA, số chiều FLD, bảo toàn tỷ lệ ký tự, mức điều chuẩn covariance và cách hiệu chỉnh xác suất. Chỉ sau khi khóa lựa chọn mới đánh giá một lần trên tập giữ lại.
+
+Đối với chuỗi, có thể nghiên cứu mô hình phát xạ nhiều thành phần và cơ chế xử lý ký tự thiếu hoặc thừa. Đối với tốc độ, cần giảm vùng giả và số giả thuyết phân đoạn trước khi tối ưu sâu mô hình quan sát. Mọi hướng phát triển cần được kiểm tra bằng cùng bộ chỉ số chuỗi và điều kiện đo thống nhất.

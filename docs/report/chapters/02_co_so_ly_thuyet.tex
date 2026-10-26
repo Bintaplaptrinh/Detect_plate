@@ -1,0 +1,106 @@
+\chapter{Cơ sở lý thuyết}
+\section{Biểu diễn đặc trưng HOG}
+Ảnh ký tự được chuẩn hóa về kích thước cố định trước khi trích xuất HOG. Đặc trưng này biểu diễn phân bố hướng biến thiên cường độ, qua đó mô tả cấu trúc nét thay vì phụ thuộc trực tiếp vào từng giá trị điểm ảnh. HOG được giới thiệu bởi Dalal và Triggs \cite{hog}; trong đồ án, cấu hình ô và khối được lựa chọn phù hợp với kích thước ký tự.
+
+Với ảnh xám $I$, tại mỗi vị trí, vectơ gradient có hai thành phần $G_x$ và $G_y$. Độ lớn và hướng được xác định bởi
+\begin{equation}
+m=\sqrt{G_x^2+G_y^2},\qquad \theta=\operatorname{atan2}(G_y,G_x).
+\end{equation}
+Các gradient được tích lũy theo các khoảng hướng trong từng ô. Những ô lân cận được ghép thành khối và chuẩn hóa để giảm ảnh hưởng của tương phản. Trong triển khai, ký tự có kích thước $32\times48$, khối $16\times16$, bước trượt $8\times8$, ô $8\times8$ và 9 khoảng hướng. Số chiều thu được là
+\begin{equation}
+d=\left(\frac{32-16}{8}+1\right)
+  \left(\frac{48-16}{8}+1\right)\times4\times9=540.
+\end{equation}
+Đặc trưng vùng biển dùng cấu hình riêng với ảnh $128\times64$ và 3\,780 chiều. Hai loại HOG phục vụ hai bài toán khác nhau: xác nhận vùng giống biển số và phân biệt ký tự. Không đưa HOG vùng biển vào bộ phân loại ký tự.
+
+\section{Chuẩn hóa đặc trưng và PCA}
+\subsection{Chuẩn hóa bằng thống kê huấn luyện}
+Đối với đặc trưng thứ $j$, phép chuẩn hóa được viết là
+\begin{equation}
+\widetilde{x}_{ij}=\frac{x_{ij}-\mu_j}{\sigma_j},
+\end{equation}
+trong đó $\mu_j$ và $\sigma_j$ chỉ được ước lượng từ tập huấn luyện. Các tập kiểm định, kiểm thử và ảnh mới đều dùng lại cùng thống kê. Với đặc trưng không biến thiên, thư viện sử dụng hệ số tỉ lệ bằng 1 để tránh chia cho 0. Chuẩn hóa giúp các chiều đặc trưng có thang đo tương đương trước khi tính khoảng cách, giảm chiều và phân loại.
+
+\subsection{Principal Component Analysis (PCA)}
+PCA tìm các hướng trực giao giữ lại phương sai lớn của dữ liệu. Cho ma trận dữ liệu đã được định tâm $X\in\mathbb{R}^{N\times d}$, ma trận hiệp phương sai mẫu là
+\begin{equation}
+S=\frac{1}{N-1}X^\mathsf{T}X.
+\end{equation}
+Các vectơ riêng của $S$ được sắp xếp theo trị riêng giảm dần. Nếu $U_k$ chứa $k$ hướng đầu, biểu diễn mới của một mẫu là $z=U_k^\mathsf{T}\widetilde{x}$. Tỷ lệ phương sai giữ lại được tính bởi
+\begin{equation}
+\eta_k=\frac{\sum_{j=1}^{k}\lambda_j}{\sum_{j=1}^{d}\lambda_j}.
+\end{equation}
+Đồ án dùng PCA với 48 thành phần và bộ giải SVD đầy đủ. Trên dữ liệu huấn luyện hiện tại, 48 thành phần giữ lại 80,44\% phương sai. Giá trị 48 là cấu hình thực nghiệm đã khóa, không được diễn giải thành số chiều tối ưu toàn cục. Việc triển khai dựa trên thành phần PCA của scikit-learn \cite{skpca}.
+
+PCA không sử dụng nhãn lớp. Một hướng có phương sai nhỏ vẫn có thể phân biệt hai ký tự gần nhau; do đó giữ nhiều phương sai không đồng nghĩa giữ nguyên độ chính xác. PCA được sử dụng để giảm số chiều và chi phí của các bước tiếp theo. Chất lượng sau giảm chiều phải được xác định bằng thực nghiệm, không suy từ tỷ lệ phương sai.
+
+\section{Fisher Linear Discriminant (FLD)}
+FLD tìm phép chiếu có giám sát nhằm tăng khoảng cách giữa các lớp tương đối với độ phân tán trong từng lớp \cite{fisher}. Ký hiệu $C$ là số lớp, $n_c$ là số mẫu lớp $c$, $\mu_c$ là trung bình lớp và $\mu$ là trung bình chung trong không gian đầu vào của FLD. Hai ma trận phân tán là
+\begin{align}
+S_W&=\sum_{c=1}^{C}\sum_{i:y_i=c}(z_i-\mu_c)(z_i-\mu_c)^\mathsf{T},\\
+S_B&=\sum_{c=1}^{C}n_c(\mu_c-\mu)(\mu_c-\mu)^\mathsf{T}.
+\end{align}
+Đối với một hướng chiếu $w$, tiêu chuẩn Fisher có dạng
+\begin{equation}
+J(w)=\frac{w^\mathsf{T}S_Bw}{w^\mathsf{T}S_Ww}.
+\end{equation}
+Trong điều kiện thích hợp, các hướng phân biệt thỏa mãn bài toán trị riêng tổng quát $S_Bw=\lambda S_Ww$. Với nhiều hướng, phép chiếu tạo biểu diễn $u=W^\mathsf{T}z$. Số hướng phân biệt không vượt quá $C-1$ và số chiều đầu vào.
+
+Với 35 lớp, FLD trong đồ án tạo 34 chiều từ đầu vào PCA 48 chiều. Thành phần Linear Discriminant Analysis của scikit-learn được dùng ở vai trò biến đổi đặc trưng, với bộ giải SVD \cite{sklda}. Cách tính này tránh nghịch đảo tường minh của $S_W$. PCA có thể giảm tính dư thừa, nhưng bản thân PCA không bảo đảm $S_W$ khả nghịch. Đây là lý do cần phân biệt lập luận giảm chiều với điều kiện đại số của bài toán Fisher.
+
+FLD tận dụng nhãn nên phù hợp với mục tiêu phân biệt ký tự. Tuy nhiên, nhãn yếu hoặc lớp ít mẫu có thể làm sai lệch hướng chiếu. Phép chiếu tuyến tính cũng có thể làm mất cấu trúc phân bố phức tạp. Sau PCA và FLD vẫn cần bộ phân loại hoặc mô hình quan sát để chuyển vectơ đặc trưng thành điểm số của từng ký tự.
+
+\section{Support Vector Machine (SVM)}
+SVM tìm biên phân cách có khoảng cách lớn giữa các lớp. Trong trường hợp nhị phân với nhãn $y_i\in\{-1,+1\}$, bài toán biên mềm được biểu diễn bởi
+\begin{align}
+\min_{w,b,\xi}\quad &\frac{1}{2}\lVert w\rVert^2+C\sum_i\xi_i,\\
+\text{với}\quad &y_i\bigl(w^\mathsf{T}\phi(x_i)+b\bigr)\geq1-\xi_i,
+\qquad \xi_i\geq0.
+\end{align}
+Hệ số $C$ điều chỉnh mức phạt vi phạm biên. Hàm ánh xạ $\phi$ được thực hiện gián tiếp thông qua kernel. Đối với kernel RBF,
+\begin{equation}
+K(x,x')=\exp\bigl(-\gamma\lVert x-x'\rVert^2\bigr).
+\end{equation}
+Nguyên lý SVM dựa trên công trình của Cortes và Vapnik \cite{svm}. Bộ SVC dùng chiến lược phân loại đa lớp từng cặp và cung cấp xác suất thông qua bước hiệu chỉnh nội bộ \cite{sksvm}. Trong đồ án, OCR cơ sở dùng $C=3$, RBF và trọng số lớp cân bằng. Khi $\gamma$ ở chế độ mặc định theo thang đo, nó phụ thuộc số chiều và phương sai của đầu vào sau biến đổi.
+
+SVM được lựa chọn làm cơ sở vì có thể học ranh giới phi tuyến trên HOG và có kết quả thực nghiệm ổn định trong chuỗi xử lý hiện có. Hạn chế là thời gian tính điểm tăng theo cấu trúc mô hình và số vectơ hỗ trợ. Việc giảm 540 chiều xuống 34 chiều có thể giảm chi phí phân loại, song vẫn cần đo trên toàn hệ thống vì phát hiện và phân đoạn không giảm theo số chiều OCR.
+
+\section{Phát xạ Gaussian trong không gian Fisher}
+Phương án trong môn sử dụng một phân bố Gaussian cho mỗi ký tự, dùng chung ma trận hiệp phương sai nội lớp. Với quan sát $u\in\mathbb{R}^{r}$ sau FLD, mật độ của lớp $c$ là
+\begin{equation}
+b_c(u)=\frac{\exp\left[-\frac12(u-m_c)^\mathsf{T}\Sigma^{-1}(u-m_c)\right]}
+{(2\pi)^{r/2}|\Sigma|^{1/2}}.
+\end{equation}
+Trung bình $m_c$ được ước lượng từ các mẫu huấn luyện của lớp $c$. Ma trận hiệp phương sai gộp và bước điều chuẩn là
+\begin{align}
+\widehat\Sigma&=\frac{1}{N-C}\sum_c\sum_{i:y_i=c}(u_i-m_c)(u_i-m_c)^\mathsf{T},\\
+\Sigma&=\widehat\Sigma+10^{-6}\frac{\operatorname{tr}(\widehat\Sigma)}{r}I.
+\end{align}
+Thành phần điều chuẩn giúp ổn định phân rã Cholesky khi ước lượng covariance. Chương trình tính log mật độ và dùng phép biến đổi softmax theo từng quan sát:
+\begin{equation}
+q_t(c)=\frac{b_c(u_t)}{\sum_k b_k(u_t)}.
+\end{equation}
+Đây là chuẩn hóa likelihood với prior lớp đồng đều, không phải ước lượng prior theo tần suất train. Hệ số chuẩn hóa theo quan sát giống nhau cho mọi trạng thái tại vị trí đó nên không thay đổi thứ tự các đường đi Viterbi trên cùng chuỗi quan sát. Nó vẫn có thể ảnh hưởng điểm chất lượng khi so sánh các giả thuyết phân đoạn khác nhau.
+
+Gaussian dùng chung covariance có chi phí suy luận thấp và liên hệ trực tiếp với bài toán phân biệt tuyến tính. Giả định này có thể chưa mô tả tốt một lớp có nhiều kiểu chữ, độ nghiêng và chất lượng nét khác nhau. Đồ án đánh giá cấu hình một Gaussian trên mỗi lớp; không suy rộng kết quả sang mọi mô hình phát xạ Gaussian.
+
+\section{Hidden Markov Model (HMM) và Viterbi}
+HMM mô tả chuỗi trạng thái ẩn và các quan sát phụ thuộc trạng thái \cite{hmm}. Trong đề tài, trạng thái $s_t$ là ký tự tại vị trí $t$, còn quan sát là vectơ đặc trưng của ảnh ký tự. Mô hình có phân bố đầu $\pi$, ma trận chuyển $A$ và các hàm phát xạ $b_c$.
+
+Các tần suất chuyển được học từ 930 chuỗi biển khác nhau thuộc tập huấn luyện. Chuỗi lặp theo danh tính chỉ được tính một lần. Để tránh xác suất bằng 0, đồ án cộng hệ số Laplace $\alpha=1$. Khi chưa xét ràng buộc vị trí, xác suất chuyển từ $i$ sang $j$ có dạng
+\begin{equation}
+a_{ij}=\frac{n_{ij}+\alpha}{\sum_k n_{ik}+\alpha |\mathcal{S}|},
+\end{equation}
+trong đó $\mathcal{S}$ là bảng trạng thái của HMM. Trong triển khai, mỗi mẫu cấu trúc quy định tập ký tự hợp lệ $\mathcal{A}_t$ tại vị trí $t$. Xác suất đầu và chuyển được chuẩn hóa lại trên các trạng thái hợp lệ tương ứng. Vì vậy, phép giải mã sử dụng xác suất chuyển phụ thuộc tập trạng thái cho phép ở từng vị trí, thay vì áp dụng nguyên ma trận chuyển cho mọi vị trí.
+
+Viterbi tìm chuỗi trạng thái có điểm log xác suất cao nhất. Với $a_{ij}^{(t)}$ là xác suất chuyển sau giới hạn trạng thái, phép truy hồi là
+\begin{align}
+\delta_1(j)&=\log\pi_j+\log q_1(j),\\
+\delta_t(j)&=\log q_t(j)+\max_{i\in\mathcal{A}_{t-1}}
+\left[\delta_{t-1}(i)+\log a_{ij}^{(t)}\right].
+\end{align}
+Lưu chỉ số trạng thái trước ở mỗi bước cho phép truy vết để thu chuỗi cuối cùng. Giải mã trong miền log giúp tránh tràn dưới khi nhân nhiều xác suất nhỏ.
+
+Hệ thống chỉ chấp nhận chuỗi đã giải mã khi mức suy giảm log xác suất quan sát trung bình so với chuỗi chọn cực đại từng ký tự không vượt 0,35. Nếu không có mẫu cấu trúc phù hợp hoặc vượt ngưỡng, chuỗi thô được giữ lại. Các mẫu cấu trúc là ràng buộc nghiên cứu, không đại diện đầy đủ mọi loại biển số.
+
+Trong nhánh Gaussian, HMM nhận likelihood từ mô hình quan sát thực sự. Trong nhánh SVM kết hợp HMM, xác suất hậu nghiệm SVC được dùng như phát xạ giả. Hai cách cung cấp quan sát cần được phân biệt khi giải thích bản chất thống kê của mô hình.

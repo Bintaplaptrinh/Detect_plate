@@ -1,11 +1,13 @@
-# Nhận diện biển số xe Việt Nam bằng HOG và SVM
+# Nhận diện biển số xe Việt Nam bằng SVM và PCA, FLD, HMM
 
 [![Python 3.14](https://img.shields.io/badge/Python-3.14-blue.svg)](https://www.python.org/)
 [![OpenCV 4.13](https://img.shields.io/badge/OpenCV-4.13-green.svg)](https://opencv.org/)
 [![scikit-learn 1.8](https://img.shields.io/badge/scikit--learn-1.8-orange.svg)](https://scikit-learn.org/1.8/)
 [![Jupyter Notebooks](https://img.shields.io/badge/Jupyter-Notebooks-orange.svg)](https://jupyter.org/)
 
-Dự án nghiên cứu nhận diện biển số từ ảnh phương tiện bằng xử lý ảnh và học máy cổ điển. Hệ thống gồm phát hiện vùng biển số, hiệu chỉnh hình học, phân đoạn ký tự, trích xuất đặc trưng HOG và phân loại SVM. Báo cáo này tổng hợp các thí nghiệm thực hiện ngày 21 và 22 tháng 10 năm 2026.
+Dự án môn Nhận dạng mẫu, giảng viên Nguyễn Thị Hồng Tú, lớp S26-65TTNT. Hệ thống nhận diện biển số từ ảnh phương tiện bằng xử lý ảnh và học máy cổ điển. Hai phương án chính là HOG với SVM và HOG với PCA, FLD, phát xạ Gaussian, HMM. Các thí nghiệm được thực hiện từ ngày 21 đến ngày 26 tháng 10 năm 2026.
+
+Báo cáo kỹ thuật và mã LaTeX được lưu tại [docs/report](docs/report). Mô hình trong chương trình dùng PCA và FLD để biểu diễn đặc trưng, Gaussian để tính xác suất quan sát và HMM để giải mã chuỗi. SVM là phương pháp đối chiếu ngoài chương trình. Trên cùng 180 ảnh, SVM đúng 74 biển, phương án Gaussian và HMM đúng 70 biển. Detector kiểm chứng vùng dùng chung SVM ở cả hai phương án.
 
 Pipeline hai giai đoạn đạt 80 biển đúng trên 180 ảnh kiểm tra, tương ứng 44,44%. Bộ lọc chất lượng ký tự đạt 74 biển đúng trên một tập kiểm tra khác gồm 180 ảnh, so với 70 biển đúng của cùng pipeline khi chưa lọc. Hai kết quả thuộc hai tập ảnh khác nhau. Hệ thống hiện phục vụ nghiên cứu; độ chính xác toàn biển và khả năng từ chối vùng giả còn hạn chế.
 
@@ -70,8 +72,6 @@ Bộ lọc ở thí nghiệm 04 sửa 5 trường hợp và làm sai 1 trường
 | [Thí nghiệm 03](docs/research-pipeline-experiment.md) | Phương pháp hai giai đoạn, phân đoạn và xếp hạng vùng |
 | [Thí nghiệm 04](docs/glyph-quality-experiment.md) | Lọc ký tự nhiễu và đánh giá trên tập C |
 | [Kiểm tra màu](docs/color-robustness.md) | Màu thân xe, cực tính chữ nền và vùng giả |
-| [Đối sánh 100 ảnh](docs/comparison-experiment.md) | Test lại mô hình sau fine-tune: toàn hệ thống, OCR, từng bố cục và TP/FP/FN, Precision/Recall/F1 |
-| [Fine-tune 10 epoch](docs/finetune-10-experiment.md) | Fine-tune detector MTCNN và YOLO26n trên 951 ảnh train VNLP, giữ nguyên OCR và đánh giá lại 100 ảnh |
 | [Số liệu tổng hợp](docs/results/experiment-summary.json) | Kết quả máy đọc được, kèm dấu kiểm tra báo cáo gốc |
 | [Báo cáo lịch sử](docs/legacy-report.md) | Các phương án KNN, CNN và SVM năm 2025 |
 
@@ -94,6 +94,10 @@ Khi sử dụng dữ liệu VNLP, cần trích dẫn cả hai công trình sau:
 Các tài liệu về AdaBoost, mô hình chuyên gia, U-Net lịch sử và thư viện triển khai được ghi tại [danh mục tham khảo](docs/references.md). Trích dẫn có định dạng BibTeX được cung cấp trong [references.bib](docs/references.bib), bao gồm khóa `PhamTA23`.
 
 ## 5. Cài đặt và tái lập
+
+### Ứng dụng thử nghiệm bằng Rust
+
+Ứng dụng cục bộ có hai lựa chọn SVM và PCA + FLD + HMM, công tắc nhận diện nhiều biển số, thời gian theo giây và ảnh có khung kèm chuỗi nhận dạng. Khởi chạy bằng `powershell -ExecutionPolicy Bypass -File app/run.ps1`, sau đó mở [http://127.0.0.1:8787](http://127.0.0.1:8787). Rust điều phối API và giao diện, tiến trình Python dùng lại mô hình đã lưu. Xem [hướng dẫn ứng dụng](app/README.md) để biết mô hình cần phục hồi và cách sử dụng ảnh mẫu nhiều biển số.
 
 Môi trường đã kiểm tra gồm Python 3.14.2, NumPy 2.4.1, OpenCV 4.13.0.92 và scikit-learn 1.8.0. Các lệnh được thực hiện tại thư mục gốc của repository, nơi chứa `pyproject.toml`.
 
@@ -163,6 +167,14 @@ Detect_plate/
 ```
 
 `.gitignore` loại môi trường Python, dữ liệu ảnh, notebook sinh tự động, model, checkpoint, cache và đầu ra cục bộ. Báo cáo Markdown, số liệu tổng hợp nhỏ và ảnh minh họa lịch sử trong `docs/legacy-evidence/` được giữ làm tài liệu nghiên cứu. [Quy tắc quản lý repository](docs/repository-policy.md) trình bày cách kiểm tra nội dung trước khi commit.
+
+## Đối sánh PCA + FLD + SVM + HMM
+
+Thí nghiệm bổ sung đối chiếu bốn nhánh SVM/PCA + FLD + SVM và decoder hiện tại/HMM trên đủ 180 ảnh test C lịch sử. Cùng 4.812 glyph train đã được xác minh theo bản phát hành, không chia ngẫu nhiên từng ký tự; đo lại toàn pipeline gồm detector, phân đoạn, HOG, phân loại, giải mã và xếp hạng ứng viên.
+
+Xem [báo cáo và kết quả ghép cặp](docs/pca-fld-hmm-comparison.md). Runner: `scripts/run_pca_fld_hmm_comparison.py`; sinh báo cáo và notebook phân tích bằng `scripts/build_pca_fld_hmm_report.py`. Tài nguyên lịch sử cần được phục hồi theo [hướng dẫn tái lập](docs/reproduction.md). Thí nghiệm không tự động thay model của `run.py`.
+
+[Đối sánh riêng không SVM trong OCR](docs/pca-fld-hmm-no-svm-comparison.md) dùng PCA + FLD với phát xạ Gaussian và HMM, đối chiếu lại SVM hiện tại và PCA + FLD + SVM + HMM. Detector kiểm chứng vùng vẫn giữ nguyên. Runner: `scripts/run_no_svm_comparison.py`; sinh báo cáo riêng và notebook 06 bằng `scripts/build_no_svm_report.py`.
 
 ## Contact
 

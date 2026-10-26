@@ -1,0 +1,147 @@
+\chapter{Mô hình thực nghiệm}
+\section{Kiến trúc và các phương án đối sánh}
+Hệ thống gồm phát hiện vùng, hiệu chỉnh, tạo các giả thuyết phân đoạn, lọc ký tự, chuẩn hóa, HOG, mô hình quan sát, giải mã và xếp hạng vùng. Cách tiếp cận hai giai đoạn HOG và SVM được tham khảo từ nghiên cứu của Mazouz và cộng sự \cite{twostage}, sau đó điều chỉnh theo dữ liệu và bố cục VNLP. Báo cáo không so sánh trực tiếp chỉ số của bài báo với kết quả toàn biển của đồ án vì điều kiện dữ liệu và định nghĩa chỉ số khác nhau.
+
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=0.5cm,
+ every node/.style={draw,align=center,text width=12.3cm,minimum height=0.85cm,font=\normalsize},
+ arr/.style={-{Latex[length=2mm]},thick}]
+\node (a) {Ảnh phương tiện};
+\node[below=of a] (b) {Sinh vùng ứng viên, kiểm chứng vùng bằng HOG và SVM};
+\node[below=of b] (c) {Hiệu chỉnh, phân đoạn, lọc và chuẩn hóa ký tự};
+\node[below=of c] (d) {HOG 540 chiều và StandardScaler};
+\node[below=of d] (e) {SVM cơ sở hoặc PCA, FLD với SVM hoặc Gaussian};
+\node[below=of e] (f) {Giải mã hiện tại hoặc HMM, xếp hạng và trả chuỗi};
+\foreach \u/\v in {a/b,b/c,c/d,d/e,e/f}{\draw[arr] (\u) to (\v);}
+\end{tikzpicture}
+\caption{Chuỗi xử lý dùng chung và vị trí thay đổi mô hình nhận dạng.}
+\end{figure}
+
+Hai phương án chính là SVM cơ sở và PCA, FLD, Gaussian, HMM. Nhánh PCA, FLD, SVM, HMM được dùng làm đối chứng trung gian nhằm phân biệt ảnh hưởng của thay mô hình quan sát với ảnh hưởng của giảm chiều. Một thí nghiệm bốn nhánh bổ sung tách riêng tác động của giảm chiều và giải mã HMM.
+
+Tối đa năm vùng được đưa vào nhận dạng. Điểm lựa chọn bằng điểm kiểm chứng vùng cộng hai lần điểm chất lượng OCR. Chất lượng OCR xét log xác suất ký tự, hình học và độ dài mềm. Vì vậy, thay mô hình quan sát có thể làm thay đổi cả giả thuyết phân đoạn và vùng được chọn, dù danh sách vùng detector tạo ra vẫn giống nhau.
+
+\section{Tham số, huấn luyện và lưu mô hình}
+\begin{table}[H]\centering
+\caption{Cấu hình thực nghiệm được cố định trước khi chấm}
+\begin{tabularx}{\textwidth}{p{4.2cm}Y}
+\toprule
+Thành phần & Cấu hình\\
+\midrule
+OCR SVM & StandardScaler, RBF, $C=3$, trọng số lớp cân bằng, xác suất hiệu chỉnh nội bộ, hạt giống 42.\\
+PCA và FLD & PCA 48 chiều, SVD đầy đủ; FLD 34 chiều, bộ giải SVD.\\
+Gaussian & Một trung bình mỗi lớp; covariance nội lớp dùng chung; hệ số điều chuẩn $10^{-6}$.\\
+HMM & 930 chuỗi train khác nhau, Laplace bằng 1, ngưỡng mất log xác suất trung bình 0,35.\\
+Kiểm chứng vùng & Ảnh $128\times64$, HOG 3\,780 chiều, SVM tuyến tính $C=0,01$, ngưỡng $-1,0$.\\
+Lựa chọn kết quả & Tối đa 5 vùng; trọng số điểm OCR bằng 2,0; cùng bộ lọc ký tự và mẫu cấu trúc.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+SVM cơ sở được lựa chọn trong quá trình phát triển trước trên dữ liệu kiểm định. Đối sánh cuối giữ cấu hình đó và học mô hình giảm chiều trên đúng tập train đã xác minh. Scaler, PCA, FLD, trung bình Gaussian và covariance chỉ học từ train. Tham số HMM chỉ sử dụng chuỗi thuộc các cảnh huấn luyện.
+
+Với nhánh Gaussian, chương trình kiểm tra bằng số rằng phép chiếu PCA và FLD trùng với nhánh SVM giảm chiều. Xác suất đầu và tần suất chuyển HMM cũng trùng giữa các nhánh cần đối chiếu. Một kiểm thử chặn lời gọi huấn luyện SVC vẫn cho phép mô hình Gaussian học thành công, xác nhận khâu OCR này không phụ thuộc SVM.
+
+Các mô hình được lưu sau huấn luyện cùng cấu hình và dấu kiểm tra. Chương trình minh họa nạp lại các đối tượng đã lưu, không huấn luyện lại khi nhập ảnh. Phương án Gaussian được giữ như một mô hình nghiên cứu riêng, chưa thay thế SVM đang được chọn cho chức năng nhận dạng mặc định.
+
+\section{Chỉ số đánh giá và điều kiện đo}
+Accuracy ký tự là số ký tự dự đoán đúng chia cho tổng số ký tự trong tập chẩn đoán. Với một lớp, precision, recall và F1 được tính bởi
+\begin{equation}
+P=\frac{TP}{TP+FP},\qquad R=\frac{TP}{TP+FN},\qquad
+F_1=\frac{2PR}{P+R}.
+\end{equation}
+Macro F1 là trung bình F1 theo lớp. Trong kết quả ký tự của đồ án, phép trung bình được thực hiện trên 25 lớp có nhãn thật xuất hiện trong 434 mẫu chẩn đoán; các mẫu số bằng 0 được xử lý theo quy ước giá trị 0. Ma trận nhầm lẫn vẫn giữ 35 lớp để thể hiện đầy đủ không gian dự đoán.
+
+Ở mức chuỗi, tỷ lệ đúng hoàn toàn và CER được xác định bởi
+\begin{align}
+E&=\frac{1}{M}\sum_{i=1}^{M}\mathbf{1}(\widehat y_i=y_i),\\
+\operatorname{CER}&=\frac{\sum_i D(\widehat y_i,y_i)}{\sum_i|y_i|},
+\end{align}
+trong đó $D$ là khoảng cách Levenshtein, tính tổng số phép thay thế, xóa và chèn tối thiểu. CER được gộp theo tổng số ký tự nhãn, không lấy trung bình CER của từng ảnh. Ảnh nhận sai vùng hoặc xuất chuỗi rỗng vẫn nằm trong mẫu số.
+
+Đánh giá phát hiện sử dụng IoU, được tính bằng diện tích giao chia diện tích hợp của hai khung. Các vùng được ghép một đối một với nhãn tại ngưỡng 0,5. Bộ chỉ số phát hiện và bộ chỉ số chuỗi được báo riêng vì chúng mô tả các nhiệm vụ khác nhau.
+
+Thí nghiệm sử dụng CPU, một luồng OpenCV và giới hạn một luồng thư viện tính toán. Mỗi ảnh được suy luận ba lượt; thứ tự phương án được xoay và ba ảnh kiểm định được dùng để làm nóng. Độ trễ chính là trung bình của trung vị ba lượt trên từng ảnh. Phép đo gồm toàn bộ xử lý sau khi ảnh đã nằm trong bộ nhớ, không gồm tải mạng, đọc ảnh và nạp mô hình. Môi trường gồm Python 3.14.2, NumPy 2.4.1, OpenCV 4.13.0.92, scikit-learn 1.8.0, SciPy 1.17.0 và joblib 1.5.3.
+
+\section{Kết quả toàn hệ thống}
+\begin{table}[H]\centering
+\caption{Đối sánh chính trên cùng 180 ảnh kiểm thử C}\label{tab:main}
+\begin{tabularx}{\textwidth}{Y r r r r}
+\toprule
+Phương án & Đúng & $E$ (\%) & CER (\%) & ms/ảnh\\
+\midrule
+\tablerows{main_results}
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\fig{so_sanh_chinh.png}{Độ chính xác chuỗi và thời gian toàn hệ thống. A là SVM; B là PCA, FLD, SVM, HMM; C là PCA, FLD, Gaussian, HMM. CER và thời gian càng thấp càng tốt.}{fig:mainresults}
+
+SVM nhận đúng 74 biển, cao hơn bốn biển so với mỗi nhánh kết hợp. Phương án Gaussian và HMM giảm thời gian từ 175,92 xuống 132,81 ms/ảnh, tương ứng tốc độ gấp 1,325 lần, nhưng CER tăng từ 28,76\% lên 34,90\%. Số biển đúng bằng nhau giữa hai nhánh kết hợp không có nghĩa mức sai số chuỗi tương đương.
+
+Phân vị 95 của độ trễ lần lượt là 274,55 ms đối với SVM, 220,36 ms đối với PCA, FLD, SVM, HMM và 204,82 ms đối với Gaussian và HMM. Đây là số đo của cùng lần chạy đối sánh chính. Các thời gian của thí nghiệm bốn nhánh ở mục sau thuộc một lần đo khác và không được ghép vào bảng này.
+
+\begin{table}[H]\centering
+\caption{Tỷ lệ đúng toàn biển theo bố cục, mỗi nhóm 60 ảnh}\label{tab:layouts}
+\begin{tabularx}{\textwidth}{Y r r r}
+\toprule
+Bố cục & SVM & PCA, FLD, & PCA, FLD,\\
+ & (\%) & SVM, HMM (\%) & Gaussian, HMM (\%)\\
+\midrule
+\tablerows{layout_results}
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Biển hai hàng ô tô có tỷ lệ đúng thấp nhất, đều bằng 25\% trong ba phương án. Với biển một hàng, SVM đạt 60\%, còn Gaussian và HMM đạt 55\%. Phân tầng theo bố cục cho thấy kết quả chung không phản ánh đồng đều mọi nhóm ảnh.
+
+\section{Chẩn đoán trên vùng chuẩn và ký tự}
+Khi cấp vùng biển nhãn chuẩn cho khối phân đoạn và OCR, tỷ lệ đúng toàn biển của SVM là 37,22\%, nhánh PCA, FLD, SVM, HMM là 33,33\%, còn nhánh Gaussian và HMM là 34,44\%. CER tương ứng là 20,56\%, 22,68\% và 25,89\%. Phép đo này loại bỏ bước tìm vùng nhưng vẫn giữ lỗi phân đoạn và nhận dạng.
+
+Vùng nhãn chuẩn là hình chữ nhật theo trục ảnh, trong khi vùng detector có thể được hiệu chỉnh phối cảnh và xếp hạng lại. Vì vậy, kết quả trên vùng chuẩn không phải cận trên toán học của nhận dạng toàn ảnh. Không diễn giải tỷ lệ 37,22\% thấp hơn 41,11\% thành việc có detector luôn tốt hơn biết vị trí thật.
+
+Tập chẩn đoán ký tự gồm 434 mẫu nhãn yếu từ 53 trên 180 biển, được chọn khi phân đoạn gốc khớp số lượng và bố cục. Có 121 biển không khớp số lượng và 6 biển không khớp hàng hoặc định dạng. Đây là tập chọn lọc, không đại diện cho mọi ký tự của toàn bộ 180 ảnh. Kiểm tra không phát hiện ký tự trùng hash chuẩn hóa với train.
+
+\begin{table}[H]\centering
+\caption{Kết quả mô hình quan sát trên 434 ký tự, chưa áp dụng HMM}\label{tab:glyph}
+\begin{tabularx}{\textwidth}{Y r r r}
+\toprule
+Mô hình quan sát của nhánh & Accuracy & Macro F1 & ms/lô\\
+ & (\%) & (\%) & 434 mẫu\\
+\midrule
+\tablerows{glyph_results}
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Thời gian lô dùng HOG đã tính trước, gồm phép chiếu và tính xác suất, không gồm HOG hoặc HMM. Nhãn nhánh trong bảng dùng để xác định mô hình quan sát tương ứng; các accuracy trên chưa phải kết quả giải mã chuỗi HMM. Chênh lệch giữa đo lô ký tự và đo toàn ảnh được phân tích ở Chương 5.
+
+\fig[0.92]{nham_lan_current_svm.png}{Ma trận nhầm lẫn SVM trên 434 ký tự. Hàng là nhãn thật, cột là dự đoán; số trong ô là số mẫu, ô trống bằng 0. Màu được hiển thị theo logarit để thấy các lỗi hiếm.}{fig:cmsvm}
+
+\fig[0.92]{nham_lan_pca_fld_hmm.png}{Ma trận nhầm lẫn Gaussian trong không gian PCA và FLD, trước HMM, trên cùng 434 ký tự. Các lớp không có mẫu thật vẫn được giữ trong hệ trục.}{fig:cmgaussian}
+
+\section{Thí nghiệm tách tác động giảm chiều và HMM}
+Thí nghiệm bổ sung sử dụng cùng 180 ảnh và cùng 4\,812 ký tự train, tạo bốn tổ hợp giữa hai mô hình quan sát và hai bộ giải mã. Kết quả ở Bảng \ref{tab:ablation} giúp tránh quy mọi thay đổi cho riêng HMM hoặc riêng PCA, FLD.
+
+\begin{table}[H]\centering
+\caption{Thí nghiệm bốn nhánh trên cùng tập kiểm thử}\label{tab:ablation}
+\begin{tabularx}{\textwidth}{Y r r r}
+\toprule
+Phương án & Biển đúng & CER (\%) & ms/ảnh\\
+\midrule
+SVM và giải mã hiện tại & 74 & 28,76 & 168,45\\
+SVM và HMM & 73 & 29,23 & 169,31\\
+PCA, FLD, SVM và giải mã hiện tại & 73 & 29,78 & 139,71\\
+PCA, FLD, SVM và HMM & 70 & 30,33 & 140,32\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Giảm chiều đi cùng SVM làm số biển đúng thay đổi từ 74 xuống 73 và giảm thời gian xử lý. Thêm HMM vào nhánh SVM giảm chiều làm số biển đúng thay đổi từ 73 xuống 70. Cấu hình HMM này chưa cho thấy lợi ích tổng thể trên nhánh SVM. Riêng nhánh Gaussian ở phép đối sánh chính có 66 chuỗi thô đúng và 70 chuỗi sau HMM đúng; mức tăng ròng này không đồng nghĩa HMM sửa đúng mọi trường hợp đã thay đổi.
+
+\section{Minh họa sử dụng mô hình đã thực nghiệm}
+Giao diện thử nghiệm dự kiến là một webapp. Sau khi giao diện được tích hợp, người dùng khởi chạy webapp theo hướng dẫn kèm mã nguồn để thử nghiệm nhận dạng trên ảnh được chọn. Giao diện dự kiến hiển thị vùng biển số, chuỗi dự đoán và thời gian xử lý, đồng thời sử dụng các mô hình đã lưu từ thực nghiệm.
+
+\fig{minh_hoa_nhan_dang.png}{Nhận dạng lại mẫu được chọn bằng mô hình đã lưu. SVM và Gaussian kết hợp HMM cùng trả chuỗi 36C28038.}{fig:demo}
+
+Minh họa ở Hình \ref{fig:demo} được tạo bằng suy luận lại trên điểm ảnh của mẫu, sau khi nạp mô hình SVM và mô hình Gaussian cùng HMM. Nhãn biển chỉ được dùng để đối chiếu kết quả sau suy luận. Ví dụ này chứng minh khả năng chạy của chức năng nhận dạng, không bổ sung một mẫu kiểm thử độc lập hay thay thế bảng đánh giá toàn tập.

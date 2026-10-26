@@ -1,0 +1,87 @@
+\chapter{Tiền xử lý dữ liệu và phân tích khám phá}
+\section{Nguồn dữ liệu và quy mô}
+Bộ dữ liệu cảnh xe chính là VNLP, do các tác giả cung cấp tại trang dự án công khai \cite{vnlpdata}. Khi sử dụng dữ liệu, nhóm trích dẫn hai công trình gắn với bộ dữ liệu \cite{vnlp2022,vnlp2023}. Bản kiểm kê cục bộ có 37\,297 ảnh, phân bố theo Bảng \ref{tab:inventory}. Quy mô này là nguồn lấy mẫu, không phải số ảnh đều được dùng để huấn luyện trong phép đối sánh cuối.
+
+\begin{table}[H]\centering
+\caption{Quy mô nguồn dữ liệu VNLP được kiểm kê}\label{tab:inventory}
+\begin{tabularx}{\textwidth}{Yr r}
+\toprule
+Bố cục & Số ảnh & Tỷ lệ (\%)\\
+\midrule
+Một hàng & 19\,086 & 51,17\\
+Hai hàng ô tô & 12\,618 & 33,83\\
+Hai hàng xe máy & 5\,593 & 15,00\\
+\midrule
+Tổng & 37\,297 & 100,00\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Ảnh VNLP có nhãn chuỗi và tọa độ vùng biển. Bộ đọc của đồ án diễn giải bốn tọa độ là $(x_1,y_1,x_2,y_2)$, sau đó chuyển sang biểu diễn nội bộ $(x,y,w,h)$, với $w=x_2-x_1$ và $h=y_2-y_1$. Quy ước được kiểm tra bằng kích thước ảnh và vùng cắt thực tế. Điều này cần thiết vì cách mô tả tọa độ trong tài liệu nguồn có thể gây nhầm giữa góc phải dưới với chiều rộng, chiều cao.
+
+Nguồn thứ hai là bộ dữ liệu ký tự nội bộ gồm 35\,500 ảnh thuộc 35 lớp. Bộ dữ liệu này được sử dụng làm nguồn dự phòng để bổ sung mẫu khi dữ liệu trích từ ảnh biển số chưa bao phủ đầy đủ các lớp hoặc có sự mất cân bằng. Trong thực nghiệm, mỗi lớp được bổ sung 60 mẫu huấn luyện từ bộ dữ liệu nội bộ, giúp duy trì đủ 35 lớp trong tập huấn luyện kết hợp.
+
+\section{Dữ liệu thực sự dùng trong đối sánh}
+Hai phương án nhận dạng chính dùng cùng 4\,812 ảnh ký tự huấn luyện. Trong đó, 2\,100 ký tự đến từ phần huấn luyện của bộ dữ liệu nội bộ; 2\,712 ký tự được trích từ VNLP. Trên 951 ảnh cảnh huấn luyện, phương pháp phân đoạn gốc chấp nhận 332 biển thỏa điều kiện số lượng và thứ tự ký tự, tạo ra 2\,712 mẫu thuộc 31 lớp. Khi kết hợp với dữ liệu nội bộ, tập huấn luyện có đủ 35 lớp.
+
+Nhãn ký tự VNLP được suy ra từ chuỗi biển, số vùng ký tự và thứ tự đọc. Đây là nhãn yếu: khớp số lượng chưa bảo đảm mỗi vùng chứa đúng một ký tự. Một vùng có thể gộp nét, thiếu nét hoặc lệch vị trí. Nhóm vì vậy phân biệt nhãn chuỗi của bộ dữ liệu với nhãn ký tự được suy ra trong quy trình.
+
+Mỗi mẫu ký tự được biểu diễn bởi 540 giá trị HOG. Nhánh giảm chiều lần lượt chuyển biểu diễn này thành 48 thành phần PCA và 34 thành phần FLD. Các con số trên là số chiều biểu diễn, không phải số lượng lớp hay số lượng mẫu.
+
+\section{Phân bố lớp và mất cân bằng}
+Tập ký tự nội bộ được lấy cân bằng 60 mẫu huấn luyện mỗi lớp trong cấu hình giới hạn. Tuy nhiên, việc bổ sung ký tự VNLP tạo phân bố không đồng đều. Bảng \ref{tab:classcounts} và Hình \ref{fig:classcounts} trình bày số mẫu thực tế sau kết hợp.
+
+\begin{table}[H]\centering
+\caption{Số mẫu của 35 lớp trong tập huấn luyện kết hợp}\label{tab:classcounts}
+\begin{tabular}{crcrcr}
+\toprule
+Lớp & Số mẫu & Lớp & Số mẫu & Lớp & Số mẫu\\
+\midrule
+\tablerows{class_counts}
+\bottomrule
+\end{tabular}
+\end{table}
+
+\fig{phan_bo_lop.png}{Phân bố 4\,812 mẫu huấn luyện. Màu xanh biểu diễn chữ số, màu nâu biểu diễn chữ cái.}{fig:classcounts}
+
+Lớp 3 có 488 mẫu, trong khi các lớp I, J, Q và W chỉ có 60 mẫu mỗi lớp. Tỷ số lớn nhất trên nhỏ nhất bằng $488/60\approx8,13$. Nhóm chữ số có 2\,977 mẫu, chiếm khoảng 61,87\%. Do đó, accuracy có thể che khuất sai số của các chữ cái hiếm.
+
+SVM sử dụng trọng số lớp cân bằng để tăng mức phạt đối với lỗi của lớp ít mẫu. Nhánh Gaussian chuẩn hóa likelihood với prior đồng đều; phép chiếu FLD vẫn được học từ phân bố mẫu huấn luyện thực tế. Hai cơ chế không tương đương và không bảo đảm loại bỏ ảnh hưởng của mất cân bằng. Báo cáo sử dụng thêm macro F1 và ma trận nhầm lẫn để quan sát sai số theo lớp.
+
+\section{Kiểm tra dữ liệu và phòng ngừa giao thoa}
+Trước khi tạo đặc trưng, chương trình kiểm tra khả năng giải mã ảnh, nhãn và tính hợp lệ của tọa độ. Các ảnh có cùng điểm ảnh sau giải mã được nhận diện bằng hàm băm. Trong nguồn ký tự, nếu cùng nội dung ảnh có nhãn xung đột, quy trình dừng để yêu cầu sửa dữ liệu. Các ảnh trùng chính xác cùng nhãn được loại khỏi danh sách mẫu riêng biệt hoặc gộp nhóm nguồn trước khi chia.
+
+Ảnh thiếu hoặc không giải mã được không được thay bằng ảnh giả hay giá trị trung bình. Sai sót đầu vào cần được sửa ở nguồn hoặc ghi nhận rõ khi chuẩn bị dữ liệu. Tọa độ được đối chiếu với kích thước ảnh để tránh cắt vùng ngoài biên. Với ký tự, ảnh chỉ có nền tạo biểu diễn rỗng sau nhị phân hóa; các kiểm thử kiểm tra trường hợp này để tránh lỗi tính toán.
+
+Việc chia dữ liệu cảnh được thực hiện theo chuỗi định danh biển số trước khi tạo ảnh cắt. Các ảnh cùng biển phải thuộc cùng một tập. Ở đối sánh cuối, số lượng giao danh tính giữa ba tập bằng 0 và số lượng ảnh cảnh trùng điểm ảnh giữa ba tập bằng 0. Kiểm tra này được thực hiện ở mức định danh và nội dung ảnh, chưa thay thế phân chia độc lập theo camera hoặc phiên ghi hình.
+
+\begin{table}[H]\centering
+\caption{Phân chia ảnh cảnh trong phép đối sánh cuối}\label{tab:splits}
+\begin{tabularx}{\textwidth}{l r Y}
+\toprule
+Tập & Số ảnh & Vai trò\\
+\midrule
+Huấn luyện & 951 & Học bộ kiểm chứng vùng, tạo ký tự huấn luyện và học chuyển trạng thái HMM.\\
+Kiểm định & 90 & Chọn cấu hình trong các thí nghiệm phát triển; làm nóng khi đo thời gian.\\
+Kiểm thử C & 180 & Đối sánh ghép cặp, 60 ảnh cho mỗi bố cục.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Tập ký tự nội bộ ở thí nghiệm cơ sở ban đầu có 2\,100 mẫu huấn luyện, 700 mẫu kiểm định và 700 mẫu kiểm thử. Kết quả trên 700 ký tự này thuộc một bài toán và nguồn dữ liệu khác với nhận diện toàn biển. Trong đối sánh cuối, chỉ phần 2\,100 mẫu huấn luyện được kết hợp để học lại các mô hình.
+
+\section{Tiền xử lý vùng biển và ký tự}
+Khối phát hiện sinh vùng ứng viên bằng ngưỡng nền trắng, nền vàng và Sobel nhiều kích thước. Các vùng được kiểm chứng bằng HOG với SVM tuyến tính. Việc sử dụng màu nhằm tăng khả năng tìm vùng biển; màu riêng lẻ chưa đủ xác nhận một vùng là biển số. Hiệu chỉnh phối cảnh giúp đưa vùng biển về dạng dễ phân đoạn hơn.
+
+Khối phân đoạn kết hợp phân tích thành phần liên thông và phép chiếu histogram theo hàng. Ảnh xám được cân bằng chiếu sáng, nhị phân hóa bằng Otsu hoặc ngưỡng thích nghi, loại viền và tạo giả thuyết một hoặc hai hàng. Các giả thuyết được đánh giá bằng chất lượng nhận dạng và tính đồng đều hình học, không dùng chuỗi nhãn để lựa chọn.
+
+Bộ lọc ký tự sử dụng chiều cao tương đối, mức phân mảnh ở mép và độ lệch hàng. Thành phần thấp dưới một nửa chiều cao tham chiếu có thể bị loại khi hàng có đủ ký tự hỗ trợ. Quy tắc mép kết hợp nhiều điều kiện; không loại ký tự chỉ vì hẹp, nhằm hạn chế làm mất chữ số 1 hoặc chữ I. Việc lọc diễn ra trước trích xuất HOG.
+
+Với mỗi ký tự giữ lại, chương trình thống nhất nét trắng trên nền đen, cắt vùng nét, thêm đệm và hiệu chỉnh độ nghiêng theo moment. Ảnh nét được đổi thành $24\times40$ và đặt giữa khung $32\times48$. Cấu hình thực nghiệm này không bảo toàn tỷ lệ rộng trên cao của vùng nét; đây là lựa chọn triển khai cần được xem xét trong hướng phát triển.
+
+\fig[0.85]{chuan_hoa_ky_tu.png}{Minh họa ký tự trước chuẩn hóa ở hàng trên và sau chuẩn hóa ở hàng dưới, lấy từ mẫu được chương trình nhận dạng.}{fig:normalize}
+
+Chuẩn hóa kích thước bảo đảm HOG có số chiều cố định, thống nhất cực tính giúp các nét có cách biểu diễn nhất quán và deskew giảm ảnh hưởng của nghiêng ký tự. Các bước này được giữ giống nhau giữa hai mô hình để khác biệt kết quả không đến từ việc thay đổi cách chuẩn bị ảnh.
+
+\section{Tình trạng tập kiểm thử và tính tái lập}
+Tập C đã được quan sát khi đánh giá bộ lọc ký tự. Vì vậy, đối sánh hiện tại không phải đánh giá trên tập độc lập mới. Cấu hình, danh sách mẫu và mô hình được lưu trước khi chấm. Chương trình tái dựng 4\,812 vectơ train, kiểm tra thống kê chuẩn hóa và vectơ hỗ trợ của SVM để xác nhận dữ liệu huấn luyện giữa các phương án.

@@ -14,6 +14,8 @@ htmlcov/
 .ipynb_checkpoints/
 
 # Local datasets and retired implementation directories
+/storage/
+/app/target/
 /CNN/
 /CNN_threshold/
 /KNN/
@@ -58,6 +60,16 @@ htmlcov/
 ~$*
 .DS_Store
 Thumbs.db
+
+# LaTeX compilation intermediates
+*.aux
+*.toc
+*.lof
+*.lot
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 
 # Local credentials and editor settings
 .env

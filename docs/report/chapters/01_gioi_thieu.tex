@@ -1,0 +1,26 @@
+\chapter{Giới thiệu}
+\section{Bối cảnh và bài toán thực tế}
+Nhận diện biển số xe là một thành phần của các hệ thống quản lý phương tiện tại bãi giữ xe, cổng ra vào và điểm kiểm soát giao thông. Đầu vào là ảnh phương tiện; đầu ra cần có vị trí vùng biển số và chuỗi ký tự tương ứng. Kết quả hỗ trợ tra cứu hoặc đối chiếu phương tiện, nhưng độ tin cậy phụ thuộc đồng thời vào chất lượng ảnh, khả năng phát hiện vùng biển, phân đoạn và nhận dạng ký tự.
+
+Đối với dữ liệu thực tế, vùng biển thường chỉ chiếm một phần nhỏ của ảnh. Biển có thể bị nghiêng, thiếu sáng, có viền dính vào nét hoặc có bố cục hai hàng. Một bộ phân loại ký tự đạt độ chính xác cao trên ảnh đã cắt không bảo đảm nhận diện đúng toàn bộ biển từ ảnh phương tiện. Vì vậy, đồ án xem xét cả mức ký tự và mức chuỗi, đồng thời giữ các trường hợp nhận dạng sai trong quá trình đánh giá.
+
+Đề tài được thực hiện trong môn Nhận dạng mẫu. PCA, FLD và HMM là các kiến thức trong chương trình được vận dụng để xây dựng phương án nhận dạng. SVM là thuật toán ngoài chương trình được sử dụng làm mô hình cơ sở và đối chiếu. Thiết kế này cho phép đánh giá giá trị thực nghiệm của phương pháp trong môn mà không đặt giả định rằng phương pháp phức tạp hơn phải cho kết quả tốt hơn.
+
+\section{Đối tượng, đầu vào và đầu ra}
+Đối tượng cần nhận dạng là chuỗi ký tự trên biển số xe Việt Nam trong bộ dữ liệu VNLP. Hệ thống hỗ trợ ba nhóm bố cục nghiên cứu: biển một hàng, biển hai hàng ô tô và biển hai hàng xe máy. Ba nhóm này phục vụ lấy mẫu và phân tích kết quả; không phải 35 lớp của bộ phân loại ký tự.
+
+Ở mức ký tự, không gian nhãn gồm 35 lớp: các chữ số từ 0 đến 9, các chữ cái từ A đến N và từ P đến Z. Bộ dữ liệu ký tự kế thừa không chứa lớp O. Tập lớp học máy này phản ánh dữ liệu được sử dụng, không được xem là mô tả đầy đủ quy định đăng ký biển số. Đầu ra nhận dạng là chuỗi viết hoa, theo thứ tự từ trái sang phải và từ hàng trên xuống hàng dưới, không chứa dấu phân cách trình bày.
+
+Một kết quả đúng toàn biển đòi hỏi chuỗi dự đoán bằng hoàn toàn chuỗi nhãn. Trong đánh giá có xét vị trí, khung được chọn còn phải có mức giao trên hợp IoU tối thiểu 0,5 so với khung nhãn. Việc tách hai điều kiện giúp tránh đồng nhất nhận dạng đúng chuỗi với phát hiện đúng vị trí.
+
+\section{Mục tiêu và phạm vi nghiên cứu}
+Mục tiêu thứ nhất là xây dựng chuỗi xử lý từ ảnh phương tiện đến chuỗi biển số, có thể nạp mô hình đã huấn luyện để nhận dạng một ảnh được chọn. Mục tiêu thứ hai là so sánh SVM với phương án kết hợp PCA, FLD, phát xạ Gaussian và HMM trên cùng dữ liệu. Mục tiêu thứ ba là phân tích quan hệ giữa độ chính xác ký tự, sai số chuỗi và thời gian thực hiện.
+
+Phạm vi nghiên cứu là ảnh tĩnh và tính toán trên CPU. Hai phương án dùng chung bộ phát hiện vùng, phân đoạn, bộ lọc chất lượng ký tự và đặc trưng HOG. SVM vẫn được sử dụng trong bộ kiểm chứng vùng chung; cụm từ không dùng SVM trong phương án Gaussian chỉ áp dụng cho khâu nhận dạng ký tự. Thiết kế giữ chung phần trước nhận dạng nhằm hạn chế số yếu tố thay đổi giữa các phương án.
+
+Đồ án không khẳng định khả năng triển khai vận hành tự động từ kết quả hiện tại. Tập kiểm thử gồm 180 ảnh đã từng được đánh giá trong lịch sử phát triển, chưa phải tập giữ lại độc lập theo camera. Phạm vi đánh giá này được duy trì xuyên suốt khi diễn giải kết quả.
+
+\section{Phương pháp tiếp cận và đóng góp}
+Quy trình thực hiện gồm kiểm kê dữ liệu, chia tập theo danh tính biển số, chuẩn hóa ảnh, huấn luyện các mô hình, khóa cấu hình và đánh giá ghép cặp. Nhãn chuẩn được sử dụng để huấn luyện hoặc chấm điểm, không được cung cấp cho bước lựa chọn vùng và nhận dạng trong suy luận.
+
+Đóng góp chính của đồ án là một phép đối sánh có kiểm soát giữa phương án SVM và phương án vận dụng kiến thức trong môn. Ngoài bảng kết quả toàn hệ thống, nghiên cứu còn cung cấp chẩn đoán trên vùng biển nhãn chuẩn, ma trận nhầm lẫn ký tự, phân tích sai số thêm, bớt, thay thế ký tự và thời gian của từng công đoạn. Kết quả được lưu cùng cấu hình, danh sách mẫu và mô hình để đối chiếu khi chạy lại.

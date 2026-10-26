@@ -7,43 +7,6 @@ from .evaluation import detection_metrics, edit_distance, sequence_metrics
 from .imaging import intersection_over_union
 
 
-def normalize_ocr(text):
-    """Uppercase and remove separators, preserving foreign alphanumeric errors."""
-    return ''.join(char for char in text.upper() if char.isalnum())
-
-
-def join_ocr_lines(detections, vertical_distance=12):
-    """Preserve upstream OCR order while reading scalar y from quadrilateral boxes."""
-    chunks, previous_y = [], None
-    for bbox, text, _ in detections:
-        center_y = float(np.mean([point[1] for point in bbox]))
-        if previous_y is not None:
-            chunks.append(' ' if abs(center_y - previous_y) < vertical_distance else '\n')
-        chunks.append(text)
-        previous_y = center_y
-    return ''.join(chunks).strip()
-
-
-def select_test_subset(manifest, count=100, seed=20261025):
-    """Balanced stratified sample of an existing test set, without replacement."""
-    rows = [r for r in manifest if r['partition'] == 'test']
-    layouts = sorted({r['layout'] for r in rows})
-    if not layouts or count < len(layouts) or count > len(rows):
-        raise ValueError('Invalid stratified sample count')
-    rng = np.random.default_rng(seed)
-    selected = []
-    for i, layout in enumerate(layouts):
-        pool = sorted([r for r in rows if r['layout'] == layout], key=lambda r: r['path'])
-        size = count // len(layouts) + (i < count % len(layouts))
-        if size > len(pool):
-            raise ValueError(f'Insufficient samples in {layout}')
-        selected.extend(pool[j].copy() for j in sorted(rng.choice(len(pool), size, replace=False)))
-    if len({r['group'] for r in selected}) != count:
-        raise ValueError('Selected plate identities are not unique')
-    rng.shuffle(selected)
-    return selected
-
-
 def average_precision(rows, threshold):
     """Single-class 101-point interpolated AP with global confidence ranking.
 

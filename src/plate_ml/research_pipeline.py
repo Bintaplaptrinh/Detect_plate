@@ -4,6 +4,7 @@ This is an adaptation for white/yellow, one/two-row VNLP plates, not a replicati
 of the Algerian yellow, digits-only experiment. OCR glyph HOG stays unchanged.
 """
 from dataclasses import dataclass, replace
+from time import perf_counter
 
 import cv2
 import numpy as np
@@ -331,20 +332,33 @@ class HybridSegmenter:
 
 class ResearchRecognizer:
     def __init__(self, ocr_model, detector, segmenter, hog, templates=DEFAULT_TEMPLATES,
-                 rerank_weight=0.5, top_k=5):
+                 rerank_weight=0.5, top_k=5, decoder=None, profile=False):
         self.model, self.detector, self.segmenter = ocr_model, detector, segmenter
         self.extractor, self.templates = HOGExtractor(hog), templates
         self.rerank_weight, self.top_k = rerank_weight, top_k
+        self.decoder = decoder or decode_plate
+        self.profile = profile
 
     def recognize_crop(self, crop):
+        start = perf_counter() if self.profile else 0
         hypotheses = self.segmenter.hypotheses(crop) if hasattr(self.segmenter, 'hypotheses') else [self.segmenter.segment(crop)]
+        stages = dict(segmentation=(perf_counter()-start)*1000, hog=0., classifier=0., decoder=0.) if self.profile else {}
         results = []
         for segmentation in hypotheses:
             chars = segmentation.characters
+            start = perf_counter() if self.profile else 0
             X = self.extractor.transform(c.image for c in chars)
+            if self.profile:
+                stages['hog'] += (perf_counter()-start)*1000
+                start = perf_counter()
             p = self.model.predict_proba(X) if len(X) else np.empty((0, len(self.model.classes_)))
+            if self.profile:
+                stages['classifier'] += (perf_counter()-start)*1000
+                start = perf_counter()
             rows = tuple(sum(c.row == r for c in chars) for r in sorted({c.row for c in chars}))
-            decoded = decode_plate(p, self.model.classes_, rows, self.templates)
+            decoded = self.decoder(p, self.model.classes_, rows, self.templates)
+            if self.profile:
+                stages['decoder'] += (perf_counter()-start)*1000
             if len(p):
                 logp = np.log(np.maximum(p.max(axis=1), 1e-9))
                 heights = np.array([c.box[3] for c in chars], dtype=float)
@@ -358,16 +372,27 @@ class ResearchRecognizer:
             else:
                 quality = -10.0
             results.append(dict(segmentation=segmentation, probabilities=p, decoded=decoded, quality=quality))
-        return max(results, key=lambda r: r['quality'])
+        best = max(results, key=lambda r: r['quality'])
+        if self.profile:
+            best['stage_ms'] = stages
+            best['hypotheses'] = len(hypotheses)
+        return best
 
     def recognize(self, image):
+        start = perf_counter() if self.profile else 0
         detected = self.detector.detect(image)
+        stages = dict(detector=(perf_counter()-start)*1000) if self.profile else {}
         predictions = []
         for candidate in detected.candidates[:self.top_k]:
             result = self.recognize_crop(candidate.crop)
+            if self.profile:
+                for key, value in result['stage_ms'].items():
+                    stages[key] = stages.get(key, 0.) + value
             result['candidate'] = candidate
             result['score'] = candidate.score + self.rerank_weight*result['quality']
             predictions.append(result)
+        if self.profile:
+            detected.diagnostics['stage_ms'] = stages
         return detected, sorted(predictions, key=lambda r: r['score'], reverse=True)
 
 
