@@ -24,7 +24,11 @@ py -3.14 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e .
 ```
 
-Dữ liệu lớn và mô hình đã huấn luyện được lưu cục bộ. Cần phục hồi các bản phát hành SVM và PCA, FLD, HMM theo [hướng dẫn ứng dụng](app/README.md) và [quy trình tái lập](docs/reproduction.md) trước khi nhận dạng. Một bản clone chỉ có mã nguồn chưa chứa các mô hình này.
+Các model runtime tối thiểu được lưu trong Git LFS để clone có thể chạy ngay. Máy cần cài
+[Git LFS](https://git-lfs.com/) và chạy `git lfs pull` sau khi clone. Checkpoint huấn luyện,
+dữ liệu lớn và các output thực nghiệm khác vẫn được lưu cục bộ. Nếu không dùng Git LFS,
+ứng dụng sẽ báo thiếu model; xem [hướng dẫn ứng dụng](app/README.md) và
+[quy trình tái lập](docs/reproduction.md) để phục hồi đầy đủ tài nguyên.
 
 Sau khi có mô hình và Rust, khởi chạy webapp:
 

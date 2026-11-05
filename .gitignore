@@ -53,11 +53,21 @@ latexmkrc
 
 # Generated execution documents, experiment outputs and models
 /notebooks/
-/reports/
+/reports/*
+!/reports/pca-fld-hmm-no-svm-180-20261026/
+/reports/pca-fld-hmm-no-svm-180-20261026/*
+!/reports/pca-fld-hmm-no-svm-180-20261026/no_svm_candidate.joblib
+!/reports/pca-fld-hmm-no-svm-180-20261026/protocol_before_test.json
 /tmp/
 /Registration/Checkpoints/
-/Registration/Registry/
-/Registration/RuntimeAssets/
+/Registration/Registry/*
+!/Registration/Registry/research_glyph_filter/
+!/Registration/Registry/research_glyph_filter/v1/
+/Registration/Registry/research_glyph_filter/v1/*
+!/Registration/Registry/research_glyph_filter/v1/model.joblib
+!/Registration/Registry/research_glyph_filter/v1/metadata.json
+/Registration/RuntimeAssets/*
+!/Registration/RuntimeAssets/814cb5954682af570e58361f9e5f8b5b513a4112776bb9ecacef9f0e4ca6c2d7.xml
 *.joblib
 *.pkl
 *.pickle
@@ -67,6 +77,13 @@ latexmkrc
 *.h5
 *.hdf5
 *.ckpt
+
+# Runtime assets intentionally published through Git LFS
+!/Registration/Registry/research_glyph_filter/v1/model.joblib
+!/Registration/Registry/research_glyph_filter/v1/metadata.json
+!/Registration/RuntimeAssets/814cb5954682af570e58361f9e5f8b5b513a4112776bb9ecacef9f0e4ca6c2d7.xml
+!/reports/pca-fld-hmm-no-svm-180-20261026/no_svm_candidate.joblib
+!/reports/pca-fld-hmm-no-svm-180-20261026/protocol_before_test.json
 
 # Local test images at repository root
 /*.jpg

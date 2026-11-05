@@ -33,11 +33,11 @@ git status --short --branch
 | Nhánh nghiên cứu ngoài phạm vi | `storage/` |
 | Môi trường và cache | `.venv/`, `__pycache__/`, `.pytest_cache/`, `app/target/` |
 | Dữ liệu lớn | Dữ liệu ký tự, VNLP, ảnh thử và bảng nhóm nguồn thực tế |
-| Mô hình | Checkpoint, Registry, RuntimeAssets và các định dạng nhị phân của mô hình |
-| Đầu ra thực nghiệm | `reports/`, `notebooks/`, `tmp/` |
+| Mô hình | Checkpoint, phần lớn Registry/RuntimeAssets và các định dạng nhị phân khác |
+| Đầu ra thực nghiệm | `reports/`, `notebooks/`, `tmp/`, ngoại trừ model PCA runtime và protocol đã chọn |
 | Cấu hình cá nhân | Biến môi trường, khóa truy cập và thiết lập trình soạn thảo |
 
-Các tệp bị bỏ theo dõi vẫn được giữ trên máy. Khi cần chỉnh sửa hoặc biên dịch báo cáo, dùng thư mục biên soạn cục bộ; Git chỉ nhận PDF hoàn chỉnh. Việc giữ PDF và slide không thay thế các mô hình và dữ liệu cần phục hồi trước khi chạy chương trình.
+Các tệp bị bỏ theo dõi vẫn được giữ trên máy. Ba model/runtime asset cần cho app và model PCA runtime được theo dõi bằng Git LFS; các checkpoint, dữ liệu lớn và output khác vẫn phải phục hồi cục bộ. Khi cần chỉnh sửa hoặc biên dịch báo cáo, dùng thư mục biên soạn cục bộ; Git chỉ nhận PDF hoàn chỉnh ngoài các file runtime đã nêu.
 
 ## Tệp đã được theo dõi
 
