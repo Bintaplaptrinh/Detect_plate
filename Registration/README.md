@@ -37,4 +37,8 @@ Thông tin mã nguồn ghi Git revision, trạng thái thay đổi và hash các
 
 Khi nạp model, cần giữ toàn bộ thư mục phiên bản và sử dụng loader phù hợp. Ví dụ `registry.load("ocr", "v3", trusted=True)` yêu cầu tài nguyên từ nguồn đã được tin cậy, vì joblib có thể thực thi mã khi giải tuần tự hóa. SHA-256 kiểm tra tính toàn vẹn của tài nguyên.
 
-`Checkpoints`, `Registry` và `RuntimeAssets` được loại khỏi Git. Thư mục này chỉ công bố tài liệu cấu trúc. Quy trình chuẩn bị model và thứ tự thí nghiệm được trình bày tại [quy trình tái lập](../docs/reproduction.md).
+Checkpoint và phần lớn Registry/RuntimeAssets được loại khỏi Git. Một release runtime
+tối thiểu được lưu bằng Git LFS để ứng dụng chạy sau khi clone; các file này gồm
+`Registry/research_glyph_filter/v1/model.joblib`, `metadata.json` và asset XML tương ứng.
+Quy trình chuẩn bị model và thứ tự thí nghiệm được trình bày tại
+[quy trình tái lập](../docs/reproduction.md).

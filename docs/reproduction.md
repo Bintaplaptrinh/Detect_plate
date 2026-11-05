@@ -2,7 +2,7 @@
 
 ## 1. Điều kiện thực hiện
 
-Các lệnh PowerShell được chạy tại thư mục repository chứa `pyproject.toml`, tương ứng `D:\Project\PlateDetect\Detect_plate` trên máy thực nghiệm. Không cần mở giao diện notebook. Dữ liệu và model không được phân phối qua Git; các runner phụ thuộc bản phát hành lịch sử phải có đầy đủ tài nguyên trước khi chạy.
+Các lệnh PowerShell được chạy tại thư mục repository chứa `pyproject.toml`, tương ứng `D:\Project\PlateDetect\Detect_plate` trên máy thực nghiệm. Không cần mở giao diện notebook. Model runtime tối thiểu được phân phối bằng Git LFS; dữ liệu, checkpoint và các bản phát hành lịch sử khác vẫn cần có đầy đủ tài nguyên cục bộ trước khi chạy runner.
 
 ```powershell
 py -3.14 -m venv .venv

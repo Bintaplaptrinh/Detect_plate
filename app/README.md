@@ -29,7 +29,10 @@ powershell -ExecutionPolicy Bypass -File app/run.ps1 -Port 8788
 
 ## Mô hình và môi trường bắt buộc
 
-Máy cần Rust, Cargo và môi trường Python có các thư viện trong `requirements-tested.txt`. Ứng dụng ưu tiên Python trong `.venv`, có thể thay bằng biến môi trường `PLATE_PYTHON` trỏ tới tệp thực thi Python.
+Máy cần Rust, Cargo, Git LFS và môi trường Python có các thư viện trong
+`requirements-tested.txt`. Sau khi clone, chạy `git lfs pull` để tải model runtime
+được lưu trong repository. Ứng dụng ưu tiên Python trong `.venv`, có thể thay bằng
+biến môi trường `PLATE_PYTHON` trỏ tới tệp thực thi Python.
 
 Hai tài nguyên đã có trên máy thực nghiệm:
 

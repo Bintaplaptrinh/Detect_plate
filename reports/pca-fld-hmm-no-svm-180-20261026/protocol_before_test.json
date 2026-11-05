@@ -1,0 +1,103 @@
+{
+  "samples": 180,
+  "repeats": 3,
+  "seed": 42,
+  "threads": 1,
+  "device": "cpu",
+  "design": "separate_paired_current_SVM_vs_PCA_FLD_SVM_HMM_vs_PCA_FLD_Gaussian_HMM",
+  "current_release": "research_glyph_filter/v1",
+  "promoted": false,
+  "tuned_on_test": false,
+  "no_svm_scope": "OCR_observation_model_only; common_region_verifier_detector_still_uses_SVM",
+  "observation_model": {
+    "type": "one_Gaussian_per_character_tied_full_covariance",
+    "likelihood": "multivariate_normal_in_Fisher_space",
+    "normalization": "row_softmax_log_likelihood_equal_class_priors",
+    "covariance_regularization": 1e-06,
+    "covariance_estimator": "pooled_train_within_class_unbiased_N_minus_C",
+    "feature_pipeline": "unchanged_HOG_540_to_StandardScaler_to_PCA_48_to_FLD_34",
+    "no_ocr_svm": true,
+    "identical_projection_to_reference_verified": true
+  },
+  "hmm": {
+    "transitions": "identical_train_only_bigrams_to_original_experiment",
+    "training_sequences": 930,
+    "smoothing": 1.0,
+    "max_log_penalty": 0.35,
+    "templates": "unchanged_research_templates",
+    "gaussian_emissions": "normalized_genuine_Gaussian_likelihoods",
+    "svm_comparator_emissions": "SVC_posteriors_as_pseudo_likelihoods"
+  },
+  "timing": "full_in_memory_pipeline_including_detector_segmentation_HOG_projection_predict_proba_decoder_reranking; excludes_load_and_image_decode",
+  "statistic": "mean_of_per_image_median_latency",
+  "warmup": [
+    "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_3029_1_36A38129_83_233_595_308.jpg",
+    "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_1228_1_36A39177_128_301_281_364.jpg",
+    "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\7_1882_1_36C29249_141_284_233_337.jpg"
+  ],
+  "training_ms": 143.76640000000407,
+  "diagnostics": {
+    "input_features": 540,
+    "pca_features": 48,
+    "fld_features": 34,
+    "within_trace": 162418.0535888672,
+    "between_trace": 260845.1024169922,
+    "separation_ratio": 1.6060105182474098,
+    "pca_explained_variance_ratio_sum": 0.8044009208679199
+  },
+  "reference_run": "D:\\Project\\PlateDetect\\Detect_plate\\reports\\pca-fld-hmm-180-20261026-v2",
+  "reference_candidate_sha256": "0ffa5832934f0c684d58194b6d7745c924a302e2c7e033df6c0bdc2ba4ef6369",
+  "candidate_sha256": "b6b5ca49271b1e35c4446abaa6b2aeb1afee1d394780ba47e90396e0aabf58dd",
+  "frozen_components": "detector, glyph_filter, segmentation_hypotheses, HOG, templates, top_k, rerank_weight",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.4.1",
+      "opencv-python": "4.13.0.92",
+      "scikit-learn": "1.8.0",
+      "scipy": "1.17.0",
+      "joblib": "1.5.3",
+      "vn-plate-ml": "0.1.0"
+    }
+  },
+  "threadpools": [
+    {
+      "user_api": "blas",
+      "internal_api": "openblas",
+      "num_threads": 1,
+      "prefix": "libscipy_openblas",
+      "filepath": "C:\\Python314\\Lib\\site-packages\\numpy.libs\\libscipy_openblas64_-9e3e5a4229c1ca39f10dc82bba9e2b2b.dll",
+      "version": "0.3.30",
+      "threading_layer": "pthreads",
+      "architecture": "SkylakeX"
+    },
+    {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 1,
+      "prefix": "vcomp",
+      "filepath": "C:\\Users\\Admin\\AppData\\Roaming\\Python\\Python314\\site-packages\\sklearn\\.libs\\vcomp140.dll",
+      "version": null
+    },
+    {
+      "user_api": "blas",
+      "internal_api": "openblas",
+      "num_threads": 1,
+      "prefix": "libscipy_openblas",
+      "filepath": "C:\\Users\\Admin\\AppData\\Roaming\\Python\\Python314\\site-packages\\scipy.libs\\libscipy_openblas-64eda39e79589aedb16f58e5547eb599.dll",
+      "version": "0.3.30",
+      "threading_layer": "pthreads",
+      "architecture": "SkylakeX"
+    }
+  ],
+  "opencv_threads": 1,
+  "inputs": {
+    "reports\\20261022T104205345901Z-glyph-filter\\fresh_test_manifest.json": "68e800b0e36b8aef12abf6d5e8e6d2a21e8887813434fa7efe731112246d004f",
+    "reports\\20261022T091902580679Z-research\\scene_manifest.json": "938b75a345001b9ff158b09cbb0a4dc94bda05edda39a2ffe6c07326839b0d08",
+    "Registration\\Registry\\ocr_legacy_plus_vnlp\\v1\\scene_manifest.json": "c9c263f0d396ae9caf38327a6e409ba5e70bbe020fc22bd61220060a24c17cfa",
+    "Registration\\Registry\\ocr_legacy_plus_vnlp\\v1\\glyph_manifests.json": "d087d9d36c48cc6972f79df3d7547412b689a2403f8f578329a396f74ce6362a",
+    "Registration\\Registry\\ocr_legacy_plus_vnlp\\v1\\legacy_train_manifest.json": "cc86a1fa7f4cb3174b20380baa0ba74996d0d87bf080fb99be0c22ee416e5723",
+    "Registration\\Registry\\research_glyph_filter\\v1\\model.joblib": "49fac9869516386f4dca77c203fe9b4f0ef1eb3a09ce73d59c183b97dc2fb3c5"
+  }
+}

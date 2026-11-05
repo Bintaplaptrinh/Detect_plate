@@ -1,0 +1,717 @@
+{
+  "schema_version": 1,
+  "name": "research_glyph_filter",
+  "version": "v1",
+  "created_at": "2026-10-22T10:45:11.942345+00:00",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.4.1",
+      "opencv-python": "4.13.0.92",
+      "scikit-learn": "1.8.0",
+      "scipy": "1.17.0",
+      "joblib": "1.5.3",
+      "vn-plate-ml": "0.1.0"
+    }
+  },
+  "artifact_sha256": {
+    "model.joblib": "49fac9869516386f4dca77c203fe9b4f0ef1eb3a09ce73d59c183b97dc2fb3c5",
+    "source_snapshot.json": "e5943552d59d50d2f8067ceae4bc6f01ba210d1b6f3400e63b4800f0c18639cd",
+    "fresh_manifest.json": "68e800b0e36b8aef12abf6d5e8e6d2a21e8887813434fa7efe731112246d004f",
+    "predictions.json": "7ebf1db809bb571cb7c77c582faf33b0afc030cff7ef9a9bba36fef324f2d831",
+    "old_regression.json": "733281c6f1f1023fd575c750fb218af1cfc446b4cdfcc94dc129ec8777862168",
+    "reported_cases.json": "b99ba54e41dffa1bca86681a8a8068f2b25bfcf95cda5bccad3c47a1171c98fd",
+    "runner_source.json": "0b1cb51e7c0c9828e3a59ec11597c83032a8e8d9eb80f695ba93996b7e38d8c2"
+  },
+  "metadata": {
+    "baseline_version": "v3",
+    "baseline_artifacts": {
+      "model.joblib": "4b70289bba7e2b81e034bee5a8cb116135cb86d4433d61c801044fe99f730b12",
+      "source_snapshot.json": "f7b2ea6d3e8c912c483aca5cac9365675aa18a34b41852983f8d06c1b6588afc",
+      "training_source_snapshot.json": "a1730b4bc0da2e59f361d1b32cdf006fb607f3ef746e91e9c1a0181a9ca755a7",
+      "scene_manifest.json": "938b75a345001b9ff158b09cbb0a4dc94bda05edda39a2ffe6c07326839b0d08",
+      "region_training.json": "633338d9db3cdaa3f68a7e9ab5fa7387a6aa5fdc23728e6784434be088607be7",
+      "selection.json": "dc198bd7d0a8b3ca317f4b98bbde55d782731c55e8bc776a36d222f5aa1c83db",
+      "predictions.json": "57d0bd053f6f3a94d4272f36e6eff67c5ca80d062642fe9180900fc8131feec8",
+      "runner_source.json": "abe5bf2ad0bed516b35c805cc7e63396f86e110727cb2e7649dd3fb6d9e1e1f1"
+    },
+    "selection": {
+      "selected": "full_filter",
+      "quality_config": {
+        "min_row_support": 3,
+        "min_relative_height": 0.5,
+        "edge_margin": 0.025,
+        "fragmented_fraction": 0.65,
+        "fragmented_row_offset": 0.18,
+        "solid_stroke_ink": 0.75,
+        "solid_stroke_aspect": 0.18,
+        "isolated_edge_gap": 0.35,
+        "solid_stroke_row_offset": 0.08,
+        "filter_fragmented_edges": true,
+        "filter_solid_edges": true
+      },
+      "source": {
+        "git_revision": "627d792b4639a94d40f35b596621f21d00d9506b",
+        "dirty": true,
+        "source_sha256": "c82cd50574e1d74641bfd5be1a7abe030e36bd6704338186f64994f6aefdf0b6"
+      },
+      "criterion": "full filter must repair both reported examples and not increase validation raw CER",
+      "metrics": {
+        "baseline_v3": {
+          "raw": {
+            "exact_match": 0.43333333333333335,
+            "character_error_rate": 0.2078804347826087,
+            "samples": 90
+          },
+          "decoded": {
+            "exact_match": 0.43333333333333335,
+            "character_error_rate": 0.20923913043478262,
+            "samples": 90
+          },
+          "exact_count": 39
+        },
+        "height_only": {
+          "raw": {
+            "exact_match": 0.4666666666666667,
+            "character_error_rate": 0.19972826086956522,
+            "samples": 90
+          },
+          "decoded": {
+            "exact_match": 0.4888888888888889,
+            "character_error_rate": 0.19701086956521738,
+            "samples": 90
+          },
+          "exact_count": 44
+        },
+        "full_filter": {
+          "raw": {
+            "exact_match": 0.4666666666666667,
+            "character_error_rate": 0.19972826086956522,
+            "samples": 90
+          },
+          "decoded": {
+            "exact_match": 0.4888888888888889,
+            "character_error_rate": 0.19701086956521738,
+            "samples": 90
+          },
+          "exact_count": 44
+        }
+      },
+      "changes": {
+        "repaired": [
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_2913_1_36A37831_121_258_545_327.jpg",
+            "truth": "36A37831",
+            "before": "36A331",
+            "after": "36A37831"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\8_1965_1_36C20537_41_240_548_327.jpg",
+            "truth": "36C20537",
+            "before": "36C20537A",
+            "after": "36C20537"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_1264_0_35B113139_472_38_616_165.jpg",
+            "truth": "35B113139",
+            "before": "35B1AI13139",
+            "after": "35B113139"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\2_79_0_29Y727678_489_3_618_107.jpg",
+            "truth": "29Y727678",
+            "before": "29Y7427678",
+            "after": "29Y727678"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\9_1815_0_29K121249_314_105_445_238.jpg",
+            "truth": "29K121249",
+            "before": "29K111249",
+            "after": "29K121249"
+          }
+        ],
+        "regressed": [],
+        "changed": [
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_2913_1_36A37831_121_258_545_327.jpg",
+            "truth": "36A37831",
+            "before": "36A331",
+            "after": "36A37831"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_2578_1_36A15402_13_205_609_278.jpg",
+            "truth": "36A15402",
+            "before": "361540",
+            "after": "36A15487"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\7_4552_1_36C29140_146_225_497_305.jpg",
+            "truth": "36C29140",
+            "before": "3629140",
+            "after": "36L29140"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\8_1965_1_36C20537_41_240_548_327.jpg",
+            "truth": "36C20537",
+            "before": "36C20537A",
+            "after": "36C20537"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\5_3337_1_36C06559_119_235_515_309.jpg",
+            "truth": "36C06559",
+            "before": "436C0653",
+            "after": "13606553"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\5_1668_0_36N0478_199_395_249_448.jpg",
+            "truth": "36N0478",
+            "before": "13CV34181",
+            "after": "13C83418"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\7_895_0_36A42582_96_233_155_311.jpg",
+            "truth": "36A42582",
+            "before": "A36A42582",
+            "after": "336A42582"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\1_209_0_36A00227_511_239_571_315.jpg",
+            "truth": "36A00227",
+            "before": "130022",
+            "after": "1361000"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_1264_0_35B113139_472_38_616_165.jpg",
+            "truth": "35B113139",
+            "before": "35B1AI13139",
+            "after": "35B113139"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\2_79_0_29Y727678_489_3_618_107.jpg",
+            "truth": "29Y727678",
+            "before": "29Y7427678",
+            "after": "29Y727678"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\8_2976_0_29c148307_226_106_375_220.jpg",
+            "truth": "29C148307",
+            "before": "29C14148307",
+            "after": "29C1448307"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\1_32_0_29l177066_156_162_300_297.jpg",
+            "truth": "29L177066",
+            "before": "33D713I3",
+            "after": "33D13I3"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\4_1207_0_29y12475_258_44_407_152.jpg",
+            "truth": "29Y12475",
+            "before": "29Y122756",
+            "after": "29Y12275"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\9_1815_0_29K121249_314_105_445_238.jpg",
+            "truth": "29K121249",
+            "before": "29K111249",
+            "after": "29K121249"
+          },
+          {
+            "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\5_1725_0_29t104093_247_65_392_168.jpg",
+            "truth": "29T104093",
+            "before": "I33DI",
+            "after": "II"
+          }
+        ]
+      },
+      "fresh_test_status": "not_evaluated",
+      "baseline_version": "v3"
+    },
+    "selection_sha256": "3780a2d1cebaf2fc56de3a8c67029679fb35d4d7b628a7a75b547e6ba0fab73d",
+    "source": {
+      "git_revision": "627d792b4639a94d40f35b596621f21d00d9506b",
+      "dirty": true,
+      "source_sha256": "c82cd50574e1d74641bfd5be1a7abe030e36bd6704338186f64994f6aefdf0b6"
+    },
+    "fresh_test": {
+      "baseline_v3": {
+        "raw": {
+          "exact_match": 0.38333333333333336,
+          "character_error_rate": 0.2998633879781421,
+          "samples": 180
+        },
+        "decoded": {
+          "exact_match": 0.3888888888888889,
+          "character_error_rate": 0.296448087431694,
+          "samples": 180
+        },
+        "exact_count": 70
+      },
+      "full_filter": {
+        "raw": {
+          "exact_match": 0.4111111111111111,
+          "character_error_rate": 0.29030054644808745,
+          "samples": 180
+        },
+        "decoded": {
+          "exact_match": 0.4111111111111111,
+          "character_error_rate": 0.287568306010929,
+          "samples": 180
+        },
+        "exact_count": 74
+      }
+    },
+    "fresh_by_layout": {
+      "baseline_v3": {
+        "one_row": {
+          "exact_match": 0.5833333333333334,
+          "character_error_rate": 0.18046709129511676,
+          "samples": 60
+        },
+        "two_rows": {
+          "exact_match": 0.25,
+          "character_error_rate": 0.44798301486199577,
+          "samples": 60
+        },
+        "two_rows_label_xe_may": {
+          "exact_match": 0.3333333333333333,
+          "character_error_rate": 0.26436781609195403,
+          "samples": 60
+        }
+      },
+      "full_filter": {
+        "one_row": {
+          "exact_match": 0.6,
+          "character_error_rate": 0.17834394904458598,
+          "samples": 60
+        },
+        "two_rows": {
+          "exact_match": 0.25,
+          "character_error_rate": 0.4416135881104034,
+          "samples": 60
+        },
+        "two_rows_label_xe_may": {
+          "exact_match": 0.38333333333333336,
+          "character_error_rate": 0.2471264367816092,
+          "samples": 60
+        }
+      }
+    },
+    "fresh_changes": {
+      "repaired": [
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\2_988_1_36A39176_98_231_539_281.jpg",
+          "truth": "36A39176",
+          "before": "36A391767",
+          "after": "36A39176"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\9_3555_0_29h184359_419_97_551_202.jpg",
+          "truth": "29H184359",
+          "before": "79H143359",
+          "after": "29H184359"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_1105_0_29V336771_534_38_635_162.jpg",
+          "truth": "29V336771",
+          "before": "AV3367A",
+          "after": "29V336771"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\2_110_0_29D203131_464_65_582_186.jpg",
+          "truth": "29D203131",
+          "before": "29D2031311",
+          "after": "29D203131"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_2183_0_29g151840_346_10_467_104.jpg",
+          "truth": "29G151840",
+          "before": "29G1351840",
+          "after": "29G151840"
+        }
+      ],
+      "regressed": [
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\5_942_0_35B188067_423_54_562_169.jpg",
+          "truth": "35B188067",
+          "before": "35B188067",
+          "after": "35B388067"
+        }
+      ],
+      "changed": [
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\9_300_1_36A43014_449_330_538_387.jpg",
+          "truth": "36A43014",
+          "before": "3763703I",
+          "after": "373703I"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_3693_1_36C03484_166_225_522_348.jpg",
+          "truth": "36C03484",
+          "before": "6034084",
+          "after": "03484"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\3_3012_1_36C15821_136_232_515_293.jpg",
+          "truth": "36C15821",
+          "before": "311",
+          "after": "36C1"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\7_3791_1_36B1073_114_225_572_313.jpg",
+          "truth": "36B1073",
+          "before": "3480336",
+          "after": "380336"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\2_1338_1_36C13935_107_223_515_297.jpg",
+          "truth": "36C13935",
+          "before": "5C13935",
+          "after": "45D13935"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\2_988_1_36A39176_98_231_539_281.jpg",
+          "truth": "36A39176",
+          "before": "36A391767",
+          "after": "36A39176"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\6_772_0_36A41612_410_251_468_307.jpg",
+          "truth": "36A41612",
+          "before": "33E013133",
+          "after": "3"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\1_1374_0_36B02506_207_307_249_350.jpg",
+          "truth": "36B02506",
+          "before": "0030",
+          "after": "030"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\9_287_0_36A39958_176_220_242_279.jpg",
+          "truth": "36A39958",
+          "before": "1C636367111",
+          "after": "1C63636711"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\7_946_0_36A42637_147_210_204_270.jpg",
+          "truth": "36A42637",
+          "before": "6A426373",
+          "after": "36A42937"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\6_1099_0_36B1425_155_395_203_448.jpg",
+          "truth": "36B1425",
+          "before": "A31AXUK0",
+          "after": "31AXUK0"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\7_970_0_36A42682_114_175_174_239.jpg",
+          "truth": "36A42682",
+          "before": "36AA13A2682",
+          "after": "36A13A2682"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\9_3555_0_29h184359_419_97_551_202.jpg",
+          "truth": "29H184359",
+          "before": "79H143359",
+          "after": "29H184359"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_1105_0_29V336771_534_38_635_162.jpg",
+          "truth": "29V336771",
+          "before": "AV3367A",
+          "after": "29V336771"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\7_2403_0_99y16965_471_185_570_278.jpg",
+          "truth": "99Y16965",
+          "before": "3II333",
+          "after": "I"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_2047_0_30h41039_362_156_482_254.jpg",
+          "truth": "30H41039",
+          "before": "13D3133",
+          "after": "1377E3771L"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\2_110_0_29D203131_464_65_582_186.jpg",
+          "truth": "29D203131",
+          "before": "29D2031311",
+          "after": "29D203131"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_2183_0_29g151840_346_10_467_104.jpg",
+          "truth": "29G151840",
+          "before": "29G1351840",
+          "after": "29G151840"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_1230_0_29T172602_336_32_467_145.jpg",
+          "truth": "29T172602",
+          "before": "32T172602",
+          "after": "20T172602"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\5_942_0_35B188067_423_54_562_169.jpg",
+          "truth": "35B188067",
+          "before": "35B188067",
+          "after": "35B388067"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\4_1140_0_29x26508_237_149_367_266.jpg",
+          "truth": "29X26508",
+          "before": "29V14601",
+          "after": "129X26508"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\6_2287_0_36p99626_164_6_289_109.jpg",
+          "truth": "36P99626",
+          "before": "6261",
+          "after": "626"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\1_247_0_99f110800_418_116_539_216.jpg",
+          "truth": "99F110800",
+          "before": "4115311",
+          "after": "0"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\4_1191_0_29m150765_389_169_512_277.jpg",
+          "truth": "29M150765",
+          "before": "29F150765",
+          "after": "7910765"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\4_1163_0_30h67151_205_58_349_181.jpg",
+          "truth": "30H67151",
+          "before": "VA41V",
+          "after": "33WA31A"
+        }
+      ]
+    },
+    "fresh_split": {
+      "seed": 2026102204,
+      "excluded_previous_identities": 1236,
+      "duplicate_scenes": [],
+      "split_counts": {
+        "validation": 0,
+        "test": 180,
+        "train": 951
+      },
+      "status": "new_plate_identity_holdout_same_dataset_not_camera_holdout"
+    },
+    "old_regression_metrics": {
+      "baseline_v3": {
+        "raw": {
+          "exact_match": 0.43333333333333335,
+          "character_error_rate": 0.25936010891763106,
+          "samples": 180
+        },
+        "decoded": {
+          "exact_match": 0.4444444444444444,
+          "character_error_rate": 0.2545949625595643,
+          "samples": 180
+        },
+        "exact_count": 80
+      },
+      "full_filter": {
+        "raw": {
+          "exact_match": 0.4722222222222222,
+          "character_error_rate": 0.25119128658951667,
+          "samples": 180
+        },
+        "decoded": {
+          "exact_match": 0.48333333333333334,
+          "character_error_rate": 0.24642614023144996,
+          "samples": 180
+        },
+        "exact_count": 87
+      }
+    },
+    "old_regression_changes": {
+      "repaired": [
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_2146_1_29X2534_104_225_496_322.jpg",
+          "truth": "29X2534",
+          "before": "29X254",
+          "after": "29X2534"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\4_2324_1_36A40669_57_146_551_269.jpg",
+          "truth": "36A40669",
+          "before": "36A406691",
+          "after": "36A40669"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\6_400_0_36A11291_148_327_210_389.jpg",
+          "truth": "36A11291",
+          "before": "36A611291",
+          "after": "36A11291"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\1_38_0_29t172977_295_22_401_105.jpg",
+          "truth": "29T172977",
+          "before": "29T172977I",
+          "after": "29T172977"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\1_248_0_29g147084_152_43_292_154.jpg",
+          "truth": "29G147084",
+          "before": "629G147084",
+          "after": "29G147084"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\4_1309_0_30h26475_177_61_329_170.jpg",
+          "truth": "30H26475",
+          "before": "30H264752",
+          "after": "30H26475"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\8_3084_0_29y548563_387_157_525_267.jpg",
+          "truth": "29Y548563",
+          "before": "4348363",
+          "after": "29Y548563"
+        }
+      ],
+      "regressed": [],
+      "changed": [
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_2146_1_29X2534_104_225_496_322.jpg",
+          "truth": "29X2534",
+          "before": "29X254",
+          "after": "29X2534"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\4_2324_1_36A40669_57_146_551_269.jpg",
+          "truth": "36A40669",
+          "before": "36A406691",
+          "after": "36A40669"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\1_2121_1_29L2005_128_184_527_264.jpg",
+          "truth": "29L2005",
+          "before": "005",
+          "after": "2005"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\5_3570_1_36C16896_30_213_631_291.jpg",
+          "truth": "36C16896",
+          "before": "36C1Y",
+          "after": "36C1"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\one_row\\9_1461_1_36A43557_68_359_533_435.jpg",
+          "truth": "36A43557",
+          "before": "36A435573",
+          "after": "36A4351"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\1_484_0_36A17562_104_322_165_391.jpg",
+          "truth": "36A17562",
+          "before": "33333A33431",
+          "after": "33A333431"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\9_55_0_30E14163_180_227_247_295.jpg",
+          "truth": "30E14163",
+          "before": "T01310L",
+          "after": "T1310L"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\7_651_0_36A29082_97_258_145_310.jpg",
+          "truth": "36A29082",
+          "before": "07A3333",
+          "after": "A303IA"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\6_400_0_36A11291_148_327_210_389.jpg",
+          "truth": "36A11291",
+          "before": "36A611291",
+          "after": "36A11291"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\8_706_0_36C15008_124_315_161_352.jpg",
+          "truth": "36C15008",
+          "before": "A6339",
+          "after": "A639"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\3_597_0_36A39294_122_232_199_302.jpg",
+          "truth": "36A39294",
+          "before": "L39294",
+          "after": "610339294"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\7_293_0_36A08375_144_214_189_270.jpg",
+          "truth": "36A08375",
+          "before": "433114393",
+          "after": "43A11433"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows\\5_1293_0_36C07776_284_364_339_419.jpg",
+          "truth": "36C07776",
+          "before": "31A44461",
+          "after": "059A33733"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\9_3685_0_15b223135_125_6_221_80.jpg",
+          "truth": "15B223135",
+          "before": "3333I34",
+          "after": "33734A"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\3_368_0_29E236228_358_15_498_129.jpg",
+          "truth": "29E236228",
+          "before": "29E27136728",
+          "after": "29E2136728"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\1_38_0_29t172977_295_22_401_105.jpg",
+          "truth": "29T172977",
+          "before": "29T172977I",
+          "after": "29T172977"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\1_248_0_29g147084_152_43_292_154.jpg",
+          "truth": "29G147084",
+          "before": "629G147084",
+          "after": "29G147084"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\2_638_0_18e126549_394_202_542_315.jpg",
+          "truth": "18E126549",
+          "before": "II331A",
+          "after": "II31A"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\1_184_0_24b123666_108_138_256_275.jpg",
+          "truth": "24B123666",
+          "before": "30IA13",
+          "after": "71A31333"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\4_1309_0_30h26475_177_61_329_170.jpg",
+          "truth": "30H26475",
+          "before": "30H264752",
+          "after": "30H26475"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\8_3084_0_29y548563_387_157_525_267.jpg",
+          "truth": "29Y548563",
+          "before": "4348363",
+          "after": "29Y548563"
+        },
+        {
+          "path": "D:\\Project\\PlateDetect\\data\\VNLP_detection\\detection\\two_rows_label_xe_may\\7_2703_0_30l28181_381_74_507_167.jpg",
+          "truth": "30L28181",
+          "before": "30L3818T3",
+          "after": "30L3818T"
+        }
+      ]
+    },
+    "evaluation_status": "fresh_identity_same_VNLP_camera_distribution_unknown_legacy_OCR_lineage"
+  }
+}
